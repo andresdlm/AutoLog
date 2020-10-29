@@ -1,3 +1,4 @@
+import 'package:autolog/Usuario/model/user.dart';
 import 'package:autolog/autolog.dart';
 import 'package:autolog/widgets/button_red.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,7 +58,14 @@ class _SignInScreen extends State<SignInScreen> {
               ButtonRed(
                 text: "Iniciar sesion con Gmail",
                 onPressed: () {
-                  userBloc.signIn().then((FirebaseUser user) => print("Bienvenido ${user.displayName}"));
+                  userBloc.signIn().then((FirebaseUser user) {
+                    userBloc.updateUserData(User(
+                      uid: user.uid,
+                      name: user.displayName,
+                      email: user.email,
+                      photoURL: user.photoUrl
+                    ));
+                  });
                 },
                 height: 50.0,
                 width: 300.0,
