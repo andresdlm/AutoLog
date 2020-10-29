@@ -1,4 +1,9 @@
+import 'package:autolog/autolog.dart';
+import 'package:autolog/widgets/button_red.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:autolog/Usuario/bloc/bloc_user.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class SignInScreen extends StatefulWidget {
 
@@ -10,9 +15,26 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreen extends State<SignInScreen> {
 
+  UserBloc userBloc;
+
   @override
   Widget build(BuildContext context) {
-    return signInGoogleUI();
+    userBloc = BlocProvider.of(context);
+    return _handleCurrentSession();
+  }
+
+  Widget _handleCurrentSession(){
+    return StreamBuilder(
+      stream: userBloc.authStatus,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //snapshot- data - Object User
+        if(!snapshot.hasData || snapshot.hasError) {
+          return signInGoogleUI();
+        } else {
+          return Autolog();
+        }
+      },
+    );
   }
 
   Widget signInGoogleUI() {
@@ -22,15 +44,24 @@ class _SignInScreen extends State<SignInScreen> {
         children: [
           //Fondo
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text("Bienvenido!\nInicia sesion",
-              style: TextStyle(
-                fontSize: 37.0,
-                fontFamily: "Lato",
-                color: Colors.black,
-                fontWeight: FontWeight.bold
+                style: TextStyle(
+                  fontSize: 37.0,
+                  fontFamily: "Lato",
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold
+                ),
               ),
-              )
+              ButtonRed(
+                text: "Iniciar sesion con Gmail",
+                onPressed: () {
+                  userBloc.signIn().then((FirebaseUser user) => print("Bienvenido ${user.displayName}"));
+                },
+                height: 50.0,
+                width: 300.0,
+              ),
             ],
           )
         ],
