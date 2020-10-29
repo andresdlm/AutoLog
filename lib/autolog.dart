@@ -1,5 +1,8 @@
+import 'package:autolog/Usuario/bloc/bloc_user.dart';
+import 'package:autolog/Usuario/ui/screens/user_details_screen.dart';
 import 'package:autolog/Vehiculo/ui/screens/list-vehiculos.dart';
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class Autolog extends StatefulWidget {
 
@@ -16,7 +19,10 @@ class _Autolog extends State<Autolog> {
   final List<Widget> widgetsChildren = [
     ListVehiculos(),
     Text("Hola1"),
-    Text("Hola2")
+    BlocProvider<UserBloc>(
+      bloc: UserBloc(),
+      child: UserDetailsScreen(),
+    )
   ];
 
   void onTapTapped(int index){

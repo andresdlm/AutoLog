@@ -5,7 +5,7 @@ class Vehiculo {
   String id;
   String marca;
   String modelo;
-  String year;
+  int year;
   String color;
   int kilometraje;
   User userOwner;

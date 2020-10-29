@@ -1,3 +1,4 @@
+import 'package:autolog/Vehiculo/ui/screens/add_vehiculo.dart';
 import 'package:flutter/material.dart';
 
 class ButtonAgregarVehiculo extends StatelessWidget {
@@ -6,10 +7,9 @@ class ButtonAgregarVehiculo extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Navegando"),
-          )
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddVehiculoScreen())
         );
       },
       child: Container(

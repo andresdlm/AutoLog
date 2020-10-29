@@ -11,6 +11,7 @@ class ListVehiculos extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        ButtonAgregarVehiculo(),
         Container(
           margin: EdgeInsets.only(
             top: 20.0,
@@ -28,7 +29,7 @@ class ListVehiculos extends StatelessWidget {
                 ),
               textAlign: TextAlign.left,
               ),
-              ButtonAgregarVehiculo()
+              
             ],
           )
         ),
