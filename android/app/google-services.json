@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "15465342586",
+    "firebase_url": "https://autolog-app.firebaseio.com",
+    "project_id": "autolog-app",
+    "storage_bucket": "autolog-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15465342586:android:546bc2c37af6458799bdc3",
+        "android_client_info": {
+          "package_name": "com.example.autolog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15465342586-8cj8kddh7vtm59l7lpik3gr4geni1lbm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKkgFcFiDC2ggv3dFim9NYYjhE9Pe0iQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "15465342586-8cj8kddh7vtm59l7lpik3gr4geni1lbm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

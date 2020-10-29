@@ -1,3 +1,4 @@
+import 'package:autolog/Usuario/ui/screens/sign_in_screen.dart';
 import 'package:autolog/autolog_material.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       child: MaterialApp(
       title: 'AutoLog',
-      home: AutologMaterial()
+      home: SignInScreen()
     ),
       bloc: UserBloc(),
     );
