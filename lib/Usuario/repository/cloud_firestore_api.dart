@@ -1,12 +1,13 @@
 import 'package:autolog/Usuario/model/user.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
+import 'package:autolog/Vehiculo/ui/widgets/bannerVehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CloudFirestoreAPI {
 
   final String USERS = "users";
-  final String PLACES = "vehiculos";
+  final String VEHICULOS = "vehiculos";
 
   final Firestore _db = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -25,11 +26,11 @@ class CloudFirestoreAPI {
   }
 
   Future<void> updateVehiculoData(Vehiculo vehiculo) async {
-    CollectionReference refVehiculos = _db.collection(PLACES);
+    CollectionReference refVehiculos = _db.collection(VEHICULOS);
     String uid = (await _auth.currentUser()).uid;
     
     
-    await _auth.currentUser().then((FirebaseUser) {
+    await _auth.currentUser().then((FirebaseUser user) {
 
       refVehiculos.add({
         'marca': vehiculo.marca,
@@ -37,11 +38,34 @@ class CloudFirestoreAPI {
         'year': vehiculo.year,
         'color': vehiculo.color,
         'kilometraje': vehiculo.kilometraje,
-        'userOwner': "$USERS/$uid",
+        'userOwner': _db.document("$USERS/$uid"),
+      }).then((DocumentReference dr){
+        dr.get().then((DocumentSnapshot snapshot) {
+          snapshot.documentID;
+          DocumentReference refUsers = _db.collection(USERS).document(user.uid);
+          refUsers.updateData({
+            'misVehiculos' : FieldValue.arrayUnion([_db.document("$VEHICULOS/${snapshot.documentID}")])
+          });
+        });
       });
+    });
+  }
 
+  List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) {
+    List<BannerVehiculo> bannerVehiculos = List<BannerVehiculo>();
+    vehiculosListSnapshot.forEach((v) { 
+      bannerVehiculos.add(BannerVehiculo(
+        Vehiculo(
+          marca: v.data['marca'],
+          modelo: v.data['modelo'],
+          year: v.data['year'],
+          color: v.data['color'],
+          kilometraje: v.data['kilometraje'],
+        )
+      ));
     });
 
+    return bannerVehiculos;
   }
 
 }

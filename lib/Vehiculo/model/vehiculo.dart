@@ -8,18 +8,18 @@ class Vehiculo {
   int year;
   String color;
   int kilometraje;
-  User userOwner;
+  //User userOwner;
 
   
   Vehiculo({
     Key key,
-    @required this.id,
+    this.id,
     @required this.marca,
     @required this.modelo,
     @required this.year,
     @required this.color,
     @required this.kilometraje,
-    @required this.userOwner
+    //@required this.userOwner
   });
   
 }

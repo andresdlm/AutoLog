@@ -1,14 +1,11 @@
+import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:flutter/material.dart';
 
 class BannerVehiculo extends StatelessWidget {
 
-  String marca;
-  String modelo;
-  int year;
-  String color;
-  int kilometraje;
+  Vehiculo vehiculo;
 
-  BannerVehiculo(this.marca, this.modelo, this.year, this.color, this.kilometraje);
+  BannerVehiculo(this.vehiculo);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +17,7 @@ class BannerVehiculo extends StatelessWidget {
       ),
 
       child: Text(
-        year.toString() + "   " + color,
+        this.vehiculo.year.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
             fontFamily: "Lato",
@@ -36,7 +33,7 @@ class BannerVehiculo extends StatelessWidget {
       ),
 
       child: Text(
-        modelo,
+        this.vehiculo.modelo,
         textAlign: TextAlign.left,
         style: TextStyle(
             fontFamily: "Lato",
@@ -53,7 +50,7 @@ class BannerVehiculo extends StatelessWidget {
       ),
 
       child: Text(
-        marca,
+        this.vehiculo.marca,
         textAlign: TextAlign.left,
         style: TextStyle(
           fontFamily: "Lato",
@@ -71,7 +68,7 @@ class BannerVehiculo extends StatelessWidget {
       ),
 
       child: Text(
-        "Kilometraje: " + kilometraje.toString(),
+        "Kilometraje: " + this.vehiculo.kilometraje.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
             fontFamily: "Lato",
