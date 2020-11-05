@@ -1,5 +1,6 @@
 import 'package:autolog/Usuario/model/user.dart';
 import 'package:autolog/autolog.dart';
+import 'package:autolog/screens/login/login_screen.dart';
 import 'package:autolog/widgets/button_red.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _SignInScreen extends State<SignInScreen> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         //snapshot- data - Object User
         if(!snapshot.hasData || snapshot.hasError) {
-          return signInGoogleUI();
+          return LoginScreen();
         } else {
           return Autolog();
         }
