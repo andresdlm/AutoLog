@@ -2,7 +2,6 @@ import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:autolog/Vehiculo/ui/widgets/buttonAgregarVehiculo.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
-import 'package:autolog/Vehiculo/ui/widgets/bannerVehiculo.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class ListVehiculos extends StatelessWidget {
@@ -13,10 +12,11 @@ class ListVehiculos extends StatelessWidget {
   Widget build(BuildContext context) {
     
     userBloc = BlocProvider.of<UserBloc>(context);
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        
+        
         ButtonAgregarVehiculo(),
         TitleHeader(title: "Mis Vehículos",),
         StreamBuilder(

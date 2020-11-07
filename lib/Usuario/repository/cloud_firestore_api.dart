@@ -56,6 +56,10 @@ class CloudFirestoreAPI {
     print("\n\n\n\n");
     print(_auth.currentUser().toString());
     
+    print("+++++++++++++++++++++++++++++++++");
+    print(vehiculosListSnapshot.first);
+    print("+++++++++++++++++++++++++++++++++");
+    
     vehiculosListSnapshot.forEach((v) { 
       if(v.data['userOwner'] == _auth.currentUser().toString()) {
         bannerVehiculos.add(BannerVehiculo(
