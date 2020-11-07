@@ -41,7 +41,6 @@ class UserBloc implements Bloc {
   //5. Leer los vehiculos
   Stream<QuerySnapshot> vehiculosListStream = FirebaseFirestore.instance.collection(CloudFirestoreAPI().VEHICULOS).snapshots();
   Stream<QuerySnapshot> get vehiculosStream => vehiculosListStream;
-  //List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) => _cloudFirestoreRepository.buildVehiculos(vehiculosListSnapshot);
 
   // 6. Iniciar sesion con correo y contraseña
   Future<String> signInEmailPassword(String email, String password) {
@@ -51,6 +50,11 @@ class UserBloc implements Bloc {
   // 7. Registrar usuario
   Future<void> registerUser(String email, String password, String name) {
     return _auth_repository.registerUser(email, password, name);
+  }
+
+  // 8. Delete Vehiculo
+  void deleteVehiculo(String idVehiculo) {
+    _cloudFirestoreRepository.deleteVehiculo(idVehiculo);
   }
 
   @override

@@ -10,6 +10,7 @@ class CloudFirestoreAPI {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  
 
 
   Future<void> updateUserData() async {
@@ -49,6 +50,16 @@ class CloudFirestoreAPI {
     });
 
     return null;
+  }
+
+  deleteTodos(String item){
+    final User user = FirebaseAuth.instance.currentUser;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
+
+    documentReference.doc(user.uid).collection('Car').doc(item).delete().whenComplete((){
+      print('$item deleted');
+    });
+
   }
 
   

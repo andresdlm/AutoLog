@@ -12,6 +12,5 @@ class CloudFirestoreRepository {
 
   Future<void> createVehiculo(Vehiculo vehiculo) => _cloudFirestoreAPI.createVehiculo(vehiculo);
 
-  //List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) =>_cloudFirestoreAPI.buildVehiculos(vehiculosListSnapshot);
-
+  void deleteVehiculo(String vehiculoID) => _cloudFirestoreAPI.deleteTodos(vehiculoID);
 }

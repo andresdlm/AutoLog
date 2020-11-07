@@ -34,22 +34,22 @@ class ListVehiculos extends StatelessWidget {
               onDismissed: (direction){
                 //deleteTodos(documentSnapshot.id);
               },
-              key: Key(documentSnapshot['Modelo']),
+              key: Key(documentSnapshot['modelo']),
               child: Card(
                 elevation: 4,
                 margin: EdgeInsets.all(8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
                 child: ListTile(
-                   title:Text(documentSnapshot['Color']),
-                   subtitle:Text(documentSnapshot['Marca']),
+                   title:Text(documentSnapshot['marca']),
+                   subtitle:Text(documentSnapshot['modelo']),
                    trailing: IconButton(
                      icon: Icon(
                        Icons.delete,
                        color: Colors.red,
                      ),
                      onPressed: (){
-                       //deleteTodos(documentSnapshot.id);
+                       userBloc.deleteVehiculo(documentSnapshot.id);
                      }),
               ),
               )
