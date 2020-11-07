@@ -20,7 +20,7 @@ class CloudFirestoreAPI {
       'name': user.name,
       'email': user.email,
       'photoURL': user.photoURL,
-      'misVehiculos': user.misVehiculos,
+      //'misVehiculos': user.misVehiculos,
       'lastSignIn': DateTime.now()
     }, merge: true);
   }
@@ -53,8 +53,12 @@ class CloudFirestoreAPI {
 
   List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) {
     List<BannerVehiculo> bannerVehiculos = List<BannerVehiculo>();
+    print("\n\n\n\n");
+    print(_auth.currentUser().toString());
+    
     vehiculosListSnapshot.forEach((v) { 
-      bannerVehiculos.add(BannerVehiculo(
+      if(v.data['userOwner'] == _auth.currentUser().toString()) {
+        bannerVehiculos.add(BannerVehiculo(
         Vehiculo(
           marca: v.data['marca'],
           modelo: v.data['modelo'],
@@ -62,7 +66,8 @@ class CloudFirestoreAPI {
           color: v.data['color'],
           kilometraje: v.data['kilometraje'],
         )
-      ));
+        ));
+      }
     });
 
     return bannerVehiculos;

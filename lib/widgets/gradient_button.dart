@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GradientButton extends StatelessWidget {
   final double width;
   final double height;
-  final Function onPressed;
+  final VoidCallback onPressed;
   final Text text;
   final Icon icon;
 

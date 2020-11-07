@@ -1,56 +1,30 @@
-import 'package:autolog/Usuario/model/user.dart';
-import 'package:autolog/autolog.dart';
-import 'package:autolog/Usuario/ui/screens/register_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:autolog/widgets/curved_widget.dart';
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:autolog/Usuario/model/user.dart';
+import 'package:autolog/widgets/curved_widget.dart';
 import 'package:autolog/widgets/gradient_button.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-
-class SignInScreen extends StatefulWidget {
-
-  @override
-  State createState() {
-    return _SignInScreen();
-  }
-}
-
-class _SignInScreen extends State<SignInScreen> {
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class RegisterScreen extends StatelessWidget{
 
   UserBloc userBloc;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _displaynameController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     userBloc = BlocProvider.of(context);
-    return _handleCurrentSession();
-  }
-
-  Widget _handleCurrentSession(){
-    return StreamBuilder(
-      stream: userBloc.authStatus,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //snapshot- data - Object User
-        if(!snapshot.hasData || snapshot.hasError) {
-          return loginScreen();
-        } else {
-          return Autolog();
-        }
-      },
-    );
-  }
-
-  Widget loginScreen() {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Color(0xff6a515e),
+        ),
       ),
       body: Container(
         height: double.infinity,
@@ -75,7 +49,7 @@ class _SignInScreen extends State<SignInScreen> {
                       colors: [Colors.white, Colors.white.withOpacity(0.4)], //opacidad del rojo
                     ),
                   ),
-                  child: Text('Login', style: TextStyle(
+                  child: Text('Register', style: TextStyle(
                     fontSize: 40,
                     color: Color(0xff6a515e),
                   ),),
@@ -89,6 +63,17 @@ class _SignInScreen extends State<SignInScreen> {
                   child: Form(
                     child: Column(
                       children: <Widget>[
+
+                        TextFormField(
+                          controller:_displaynameController,
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.person_add_alt_1),
+                              labelText: "Name"
+                          ),
+                          keyboardType: TextInputType.name,
+                          autovalidateMode: AutovalidateMode.always,
+                        ),
+
                         TextFormField(
                           controller:_emailController,
                           decoration: InputDecoration(
@@ -108,24 +93,25 @@ class _SignInScreen extends State<SignInScreen> {
                           obscureText: true,
                           autovalidateMode: AutovalidateMode.always,
                         ),
-                        SizedBox(height: 20,
+
+                        SizedBox(height: 10,
                         ),
                         GradientButton(
                           width: 140,
                           height: 45,
                           onPressed: () async {
-                            userBloc.signInEmailPassword(_emailController.text, _passwordController.text, context).then((FirebaseUser user) {
+                            userBloc.registerUser(this._emailController.text, this._passwordController.text, context).then((FirebaseUser user) {
                               userBloc.updateUserData(User(
                                 uid: user.uid,
-                                name: user.displayName,
+                                name: _displaynameController.text,
                                 email: user.email,
                                 photoURL: user.photoUrl
                               ));
-                              _emailController.clear();
-                              _passwordController.clear();
+                            }).whenComplete(() {
+                              Navigator.pop(context);
                             });
                           },
-                          text: Text('Login', style: TextStyle(color: Colors.white),
+                          text: Text('Register', style: TextStyle(color: Colors.white),
                           ),
                           icon: Icon(
                               Icons.check,
@@ -135,64 +121,31 @@ class _SignInScreen extends State<SignInScreen> {
                         SizedBox(
                             height: 10
                         ),
-                        
                         GradientButton(
                           width: 140,
                           height: 45,
                           onPressed: () {
-                            userBloc.signIn().then((FirebaseUser user) {
-                              userBloc.updateUserData(User(
-                                uid: user.uid,
-                                name: user.displayName,
-                                email: user.email,
-                                photoURL: user.photoUrl
-                              ));
-                            });
+                            Navigator.pop(context);
                           },
-                          text: Text('Google', style: TextStyle(color: Colors.white),
+                          text: Text('Log In', style: TextStyle(color: Colors.white),
                           ),
                           icon: Icon(
-                              Icons.alternate_email,
-                              color: Colors.white
+                            Icons.login_rounded
                           ),
                         ),
                         SizedBox(
                             height: 10
                         ),
-                        GradientButton(
-                          width: 140,
-                          height: 45,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => RegisterScreen())
-                            );
-                          },
-                          text: Text('Register', style: TextStyle(color: Colors.white),
-                          ),
-                          icon: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white
-                          ),
-                        ),//Bot
-                        
                       ],
                     ),
                   ),
-                )
+                ),
               )
             ],
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 
 

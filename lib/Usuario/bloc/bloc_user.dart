@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:autolog/Usuario/repository/auth_repository.dart';
+import 'package:flutter/material.dart';
 
 class UserBloc implements Bloc {
 
@@ -42,6 +43,16 @@ class UserBloc implements Bloc {
   Stream<QuerySnapshot> vehiculosListStream = Firestore.instance.collection(CloudFirestoreAPI().VEHICULOS).snapshots();
   Stream<QuerySnapshot> get vehiculosStream => vehiculosListStream;
   List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) => _cloudFirestoreRepository.buildVehiculos(vehiculosListSnapshot);
+
+  // 6. Iniciar sesion con correo y contraseña
+  Future<FirebaseUser> signInEmailPassword(String email, String password, BuildContext context) {
+    return _auth_repository.signInFirebaseEmailPassword(email, password, context);
+  }
+
+  // 7. Registrar usuario
+  Future<FirebaseUser> registerUser(String email, String password, BuildContext context) {
+    return _auth_repository.registerUser(email, password, context);
+  }
 
   @override
   void dispose() {
