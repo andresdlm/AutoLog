@@ -103,17 +103,15 @@ class _AddVehiculoScreen extends State<AddVehiculoScreen> {
             child: ButtonBlue(
               buttonText: "Crear vehiculo",
               onPressed: () {
-                // ignore: missing_required_param
-                userBloc.updateVehiculoData(Vehiculo(
+                
+                userBloc.createVehiculo(Vehiculo(
                   marca: _controllerMarca.text,
                   modelo: _controllerModelo.text,
                   year: int.parse(_controllerYear.text),
                   color: _controllerColor.text,
                   kilometraje: int.parse(_controllerKilometraje.text),
-                )).whenComplete(() {
-                  print("Termino");
-                  Navigator.pop(context);
-                });
+                ));
+                Navigator.pop(context);
               },
             ),
           )

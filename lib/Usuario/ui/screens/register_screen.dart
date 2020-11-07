@@ -1,5 +1,5 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
-import 'package:autolog/Usuario/model/user.dart';
+import 'package:autolog/Usuario/model/usuario.dart';
 import 'package:autolog/widgets/curved_widget.dart';
 import 'package:autolog/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -100,13 +100,8 @@ class RegisterScreen extends StatelessWidget{
                           width: 140,
                           height: 45,
                           onPressed: () async {
-                            userBloc.registerUser(this._emailController.text, this._passwordController.text, context).then((FirebaseUser user) {
-                              userBloc.updateUserData(User(
-                                uid: user.uid,
-                                name: _displaynameController.text,
-                                email: user.email,
-                                photoURL: user.photoUrl
-                              ));
+                            userBloc.registerUser(this._emailController.text, this._passwordController.text, this._displaynameController.text).whenComplete(() {
+                              userBloc.updateUserData();
                             }).whenComplete(() {
                               Navigator.pop(context);
                             });

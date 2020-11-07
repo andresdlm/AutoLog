@@ -1,4 +1,4 @@
-import 'package:autolog/Usuario/model/user.dart';
+import 'package:autolog/Usuario/model/usuario.dart';
 import 'package:autolog/autolog.dart';
 import 'package:autolog/Usuario/ui/screens/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -114,13 +114,7 @@ class _SignInScreen extends State<SignInScreen> {
                           width: 140,
                           height: 45,
                           onPressed: () async {
-                            userBloc.signInEmailPassword(_emailController.text, _passwordController.text, context).then((FirebaseUser user) {
-                              userBloc.updateUserData(User(
-                                uid: user.uid,
-                                name: user.displayName,
-                                email: user.email,
-                                photoURL: user.photoUrl
-                              ));
+                            userBloc.signInEmailPassword(_emailController.text, _passwordController.text).whenComplete(() {
                               _emailController.clear();
                               _passwordController.clear();
                             });
@@ -140,13 +134,8 @@ class _SignInScreen extends State<SignInScreen> {
                           width: 140,
                           height: 45,
                           onPressed: () {
-                            userBloc.signIn().then((FirebaseUser user) {
-                              userBloc.updateUserData(User(
-                                uid: user.uid,
-                                name: user.displayName,
-                                email: user.email,
-                                photoURL: user.photoUrl
-                              ));
+                            userBloc.signIn().whenComplete(() {
+                              userBloc.updateUserData();
                             });
                           },
                           text: Text('Google', style: TextStyle(color: Colors.white),

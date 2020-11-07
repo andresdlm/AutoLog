@@ -1,3 +1,4 @@
+import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +8,25 @@ class FirebaseAuthAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<FirebaseUser> signIn() async {
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
+  Future<String> signIn() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
-    FirebaseUser user = await _auth.signInWithCredential(
-      GoogleAuthProvider.getCredential(idToken: gSA.idToken, accessToken: gSA.accessToken)
-    );
+    final AuthCredential authCredential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken);
 
-    return user;
+    final UserCredential userCredential =
+    await _auth.signInWithCredential(authCredential);
+    final User user = userCredential.user;
+    assert(user.displayName != null);
+    assert(user.email != null);
+    assert(user.photoURL != null);
+
+    final User currentUser = _auth.currentUser;
+    assert(currentUser.uid == user.uid);
+
+    return 'Logged In';
   }
 
   void signOut() async {
@@ -23,54 +34,33 @@ class FirebaseAuthAPI {
     googleSignIn.signOut();
   }
 
-  Future<FirebaseUser> signInWithEmailAndPassword(String email, String password, BuildContext context) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
-      FirebaseUser usuario = (await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      ));
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return "Signed in";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<void> registerAccount(String email, String password, String name) async {
     
-      if (!usuario.isEmailVerified) {
-        await usuario.sendEmailVerification();
+    final User user = (await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    )).user;
+
+    if (user != null) {
+      if (!user.emailVerified) {
+        await user.sendEmailVerification();
       }
-      print("+++++++++++++++++++++++++++++++++++");
-      print(usuario);
-      print("+++++++++++++++++++++++++++++++++++");
-      return usuario;
+      await user.updateProfile(displayName: name);
 
-    }  catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to sign in with Email & Password"),
-      ));
+    } else {
+      print("Registro fallido");
     }
   }
-
-  Future<FirebaseUser> registerAccount(String email, String password, BuildContext context) async {
-    try{
-      final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      ));
-
-      if (user != null) {
-        if (!user.isEmailVerified) {
-          await user.sendEmailVerification();
-        }
-        UserUpdateInfo info = UserUpdateInfo();
-        user.updateProfile(info);
-        print("+++++++++++++++++++++++++++++++++++");
-        print(user.displayName);
-        print("+++++++++++++++++++++++++++++++++++");
-        return user;
-      } 
-
-    }catch(e){
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to register with Email & Password"),
-      ));
-
-    }
-  }
+  
 
 
 }

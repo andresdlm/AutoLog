@@ -6,12 +6,12 @@ class AuthRepository {
 
   final _firebaseAuthAPI = FirebaseAuthAPI();
 
-  Future<FirebaseUser> signInFirebase() => _firebaseAuthAPI.signIn();
+  Future<String> signInFirebase() => _firebaseAuthAPI.signIn();
 
   signOut() => _firebaseAuthAPI.signOut();
 
-  Future<FirebaseUser> signInFirebaseEmailPassword(String email, String password, BuildContext context) => _firebaseAuthAPI.signInWithEmailAndPassword(email, password, context);
+  Future<String> signInFirebaseEmailPassword(String email, String password) => _firebaseAuthAPI.signInWithEmailAndPassword(email, password);
 
-  Future<FirebaseUser> registerUser(String email, String password, BuildContext context) => _firebaseAuthAPI.registerAccount(email, password, context);
+  Future<void> registerUser(String email, String password, String name) => _firebaseAuthAPI.registerAccount(email, password, name);
 
 }

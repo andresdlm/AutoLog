@@ -1,4 +1,4 @@
-import 'package:autolog/Usuario/model/user.dart';
+import 'package:autolog/Usuario/model/usuario.dart';
 import 'package:autolog/Usuario/repository/cloud_firestore_api.dart';
 import 'package:autolog/Usuario/repository/cloud_firestore_repository.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
@@ -17,13 +17,12 @@ class UserBloc implements Bloc {
   //Flujo de datos - Streams
   //Stream - Firebase
   //StreamController
-  Stream<FirebaseUser> streamFirebase = FirebaseAuth.instance.onAuthStateChanged;
-  Stream<FirebaseUser> get authStatus => streamFirebase;
-  Future<FirebaseUser> get currentUser => FirebaseAuth.instance.currentUser();
+  Stream<User> streamFirebase = FirebaseAuth.instance.authStateChanges();
+  Stream<User> get authStatus => streamFirebase;
 
   // Casos de uso
   //1. SignIn por Google
-  Future<FirebaseUser> signIn() {
+  Future<String> signIn() {
     return _auth_repository.signInFirebase();
   }
 
@@ -34,24 +33,24 @@ class UserBloc implements Bloc {
 
   //3. Registrar usuario en base de datos
   final _cloudFirestoreRepository = CloudFirestoreRepository();
-  void updateUserData(User user) => _cloudFirestoreRepository.updateUserDataFirestore(user);
+  void updateUserData() => _cloudFirestoreRepository.updateUserDataFirestore();
 
   //4. Ingresar un nuevo vehiculo
-  Future<void> updateVehiculoData(Vehiculo vehiculo) => _cloudFirestoreRepository.updateVehiculoData(vehiculo);
+  Future<void> createVehiculo(Vehiculo vehiculo) => _cloudFirestoreRepository.createVehiculo(vehiculo);
 
   //5. Leer los vehiculos
-  Stream<QuerySnapshot> vehiculosListStream = Firestore.instance.collection(CloudFirestoreAPI().VEHICULOS).snapshots();
+  Stream<QuerySnapshot> vehiculosListStream = FirebaseFirestore.instance.collection(CloudFirestoreAPI().VEHICULOS).snapshots();
   Stream<QuerySnapshot> get vehiculosStream => vehiculosListStream;
-  List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) => _cloudFirestoreRepository.buildVehiculos(vehiculosListSnapshot);
+  //List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) => _cloudFirestoreRepository.buildVehiculos(vehiculosListSnapshot);
 
   // 6. Iniciar sesion con correo y contraseña
-  Future<FirebaseUser> signInEmailPassword(String email, String password, BuildContext context) {
-    return _auth_repository.signInFirebaseEmailPassword(email, password, context);
+  Future<String> signInEmailPassword(String email, String password) {
+    return _auth_repository.signInFirebaseEmailPassword(email, password);
   }
 
   // 7. Registrar usuario
-  Future<FirebaseUser> registerUser(String email, String password, BuildContext context) {
-    return _auth_repository.registerUser(email, password, context);
+  Future<void> registerUser(String email, String password, String name) {
+    return _auth_repository.registerUser(email, password, name);
   }
 
   @override

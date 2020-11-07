@@ -1,6 +1,4 @@
-import 'package:autolog/Usuario/model/user.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
-import 'package:autolog/Vehiculo/ui/widgets/bannerVehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,72 +7,50 @@ class CloudFirestoreAPI {
   final String USERS = "users";
   final String VEHICULOS = "vehiculos";
 
-  final Firestore _db = Firestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
 
-  void updateUserData(User user) async {
-    DocumentReference ref = _db.collection(USERS).document(user.uid);
-    return ref.setData({
-      'id': user.uid,
-      'name': user.name,
-      'email': user.email,
-      'photoURL': user.photoURL,
-      //'misVehiculos': user.misVehiculos,
-      'lastSignIn': DateTime.now()
-    }, merge: true);
+  Future<void> updateUserData() async {
+
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser.uid.toString();
+    String name = auth.currentUser.displayName.toString();
+    String mail = auth.currentUser.email.toString();
+    String phoneNumber = auth.currentUser.phoneNumber.toString();
+    String photoURL = auth.currentUser.photoURL.toString();
+
+    return users.doc(uid).set({
+      'uid': uid,
+      'name':name,
+      'mail': mail,
+      'phoneNumber': phoneNumber,
+      'photoURL': photoURL,
+
+    }).then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future<void> updateVehiculoData(Vehiculo vehiculo) async {
-    CollectionReference refVehiculos = _db.collection(VEHICULOS);
-    String uid = (await _auth.currentUser()).uid;
-    
-    
-    await _auth.currentUser().then((FirebaseUser user) {
+  Future<void> createVehiculo(Vehiculo vehiculo){
+    final User user = FirebaseAuth.instance.currentUser;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
 
-      refVehiculos.add({
-        'marca': vehiculo.marca,
-        'modelo': vehiculo.modelo,
-        'year': vehiculo.year,
-        'color': vehiculo.color,
-        'kilometraje': vehiculo.kilometraje,
-        'userOwner': _db.document("$USERS/$uid"),
-      }).then((DocumentReference dr){
-        dr.get().then((DocumentSnapshot snapshot) {
-          snapshot.documentID;
-          DocumentReference refUsers = _db.collection(USERS).document(user.uid);
-          refUsers.updateData({
-            'misVehiculos' : FieldValue.arrayUnion([_db.document("$VEHICULOS/${snapshot.documentID}")])
-          });
-        });
-      });
-    });
-  }
+    documentReference.doc(user.uid).collection('Car').doc().set({
+      'marca': vehiculo.marca,
+      'modelo': vehiculo.modelo,
+      'year': vehiculo.year,
+      'color': vehiculo.color,
+      'km': vehiculo.kilometraje,
+      'owner': user.uid,
 
-  List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) {
-    List<BannerVehiculo> bannerVehiculos = List<BannerVehiculo>();
-    print("\n\n\n\n");
-    print(_auth.currentUser().toString());
-    
-    print("+++++++++++++++++++++++++++++++++");
-    print(vehiculosListSnapshot.first);
-    print("+++++++++++++++++++++++++++++++++");
-    
-    vehiculosListSnapshot.forEach((v) { 
-      if(v.data['userOwner'] == _auth.currentUser().toString()) {
-        bannerVehiculos.add(BannerVehiculo(
-        Vehiculo(
-          marca: v.data['marca'],
-          modelo: v.data['modelo'],
-          year: v.data['year'],
-          color: v.data['color'],
-          kilometraje: v.data['kilometraje'],
-        )
-        ));
-      }
+    }).whenComplete((){
+      print('$vehiculo.marca, $vehiculo.modelo created');
     });
 
-    return bannerVehiculos;
+    return null;
   }
+
+  
 
 }

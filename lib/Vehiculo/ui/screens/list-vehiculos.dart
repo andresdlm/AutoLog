@@ -1,12 +1,15 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:autolog/Vehiculo/ui/widgets/buttonAgregarVehiculo.dart';
 import 'package:autolog/widgets/title_header.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class ListVehiculos extends StatelessWidget {
 
   UserBloc userBloc;
+  final User user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -19,29 +22,41 @@ class ListVehiculos extends StatelessWidget {
         
         ButtonAgregarVehiculo(),
         TitleHeader(title: "Mis Vehículos",),
-        StreamBuilder(
-          stream: userBloc.vehiculosStream,
-          builder: (context, AsyncSnapshot snapshot){
-            switch(snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return CircularProgressIndicator();
-              case ConnectionState.done:
-                return Column(
-                  children: userBloc.buildVehiculos(snapshot.data.documents)
-                );
-              case ConnectionState.active:
-                return Column(
-                  children: userBloc.buildVehiculos(snapshot.data.documents)
-                );
-              case ConnectionState.none:
-                return CircularProgressIndicator();
-              default:
-                return Column(
-                  children: userBloc.buildVehiculos(snapshot.data.documents)
-                );
-            }
-          }
-        )
+        StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').snapshots(),
+          builder: (context, snapshots){
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: snapshots.data.docs.length,
+          itemBuilder: (context, index){
+            DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
+            return Dismissible(
+              onDismissed: (direction){
+                //deleteTodos(documentSnapshot.id);
+              },
+              key: Key(documentSnapshot['Modelo']),
+              child: Card(
+                elevation: 4,
+                margin: EdgeInsets.all(8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+                child: ListTile(
+                   title:Text(documentSnapshot['Color']),
+                   subtitle:Text(documentSnapshot['Marca']),
+                   trailing: IconButton(
+                     icon: Icon(
+                       Icons.delete,
+                       color: Colors.red,
+                     ),
+                     onPressed: (){
+                       //deleteTodos(documentSnapshot.id);
+                     }),
+              ),
+              )
+            );
+          },
+        );
+      }),
         
         
       ],  
