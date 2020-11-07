@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       child: MaterialApp(
-      title: 'AutoLog',
-      home: SignInScreen()
-    ),
+        debugShowCheckedModeBanner: true,
+        title: 'AutoLog',
+        home: SignInScreen()
+      ),
       bloc: UserBloc(),
     );
   }

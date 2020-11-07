@@ -45,6 +45,6 @@ class UserBloc implements Bloc {
 
   @override
   void dispose() {
-    
+
   }
 }

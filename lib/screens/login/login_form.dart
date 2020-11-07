@@ -159,9 +159,6 @@ class _LoginFormState extends State<LoginForm> {
       if (!usuario.isEmailVerified) {
         await usuario.sendEmailVerification();
       }
-      print("+++++++++++++++++++++++++++++++++++");
-      print(usuario);
-      print("+++++++++++++++++++++++++++++++++++");
       return usuario;
 
     }  catch (e) {

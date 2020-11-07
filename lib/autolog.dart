@@ -15,49 +15,58 @@ class Autolog extends StatefulWidget {
 
 class _Autolog extends State<Autolog> {
 
-  int indexTap = 0;
-  final List<Widget> widgetsChildren = [
-    ListVehiculos(),
-    Text("Hola1"),
-    BlocProvider<UserBloc>(
+  int _currentIndex = 0;
+  final tabs = [
+    Center(child: Text("Hola1")),
+    Center(child: ListVehiculos()),
+    Center(child: BlocProvider<UserBloc>(
       bloc: UserBloc(),
       child: UserDetailsScreen(),
-    )
+    )),
+    Center(child: Text('notification')),
   ];
 
-  void onTapTapped(int index){
-    setState(() {
-      indexTap = index;
-    });
-  }
+  
 
-  @override
-  Widget build(BuildContext context) {
+@override
+  Widget build(BuildContext context){
     return Scaffold(
-      body: widgetsChildren[indexTap],
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.white,
-          primaryColor: Colors.indigo
-        ),
-        child: BottomNavigationBar(
-          onTap: onTapTapped,
-          currentIndex: indexTap,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text("")
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.build),
-              title: Text("")
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text("")
-            ),
-          ],
-        ),
+
+      body: tabs[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        iconSize: 25,
+        selectedFontSize: 13,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('HOME'),
+            backgroundColor: Colors.blueAccent,
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions_car_rounded),
+            title: Text('CARS'),
+            backgroundColor: Colors.redAccent,
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text('PROFILE'),
+            backgroundColor: Colors.deepPurpleAccent,
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.alarm),
+            title: Text('NOTIFICATION'),
+            backgroundColor: Colors.deepOrangeAccent,
+          ),
+        ],
+        onTap: (index) {
+          setState((){
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }

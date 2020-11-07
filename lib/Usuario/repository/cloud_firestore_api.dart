@@ -20,7 +20,7 @@ class CloudFirestoreAPI {
       'name': user.name,
       'email': user.email,
       'photoURL': user.photoURL,
-      'misVehiculos': user.misVehiculos,
+      //'misVehiculos': user.misVehiculos,
       'lastSignIn': DateTime.now()
     }, merge: true);
   }
@@ -53,6 +53,9 @@ class CloudFirestoreAPI {
 
   List<BannerVehiculo> buildVehiculos(List<DocumentSnapshot> vehiculosListSnapshot) {
     List<BannerVehiculo> bannerVehiculos = List<BannerVehiculo>();
+    print("+++++++++++++++++++++++++++++++++");
+    print(vehiculosListSnapshot.first);
+    print("+++++++++++++++++++++++++++++++++");
     vehiculosListSnapshot.forEach((v) { 
       bannerVehiculos.add(BannerVehiculo(
         Vehiculo(
