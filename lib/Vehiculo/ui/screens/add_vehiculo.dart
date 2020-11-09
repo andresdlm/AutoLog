@@ -99,9 +99,9 @@ class _AddVehiculoScreen extends State<AddVehiculoScreen> {
             ),
           ),
           Container(
-            width: 70.0,
+            width: 350.0,
             child: ButtonBlue(
-              buttonText: "Crear vehiculo",
+              buttonText: "Agregar Vehiculo",
               onPressed: () {
                 
                 userBloc.createVehiculo(Vehiculo(

@@ -19,18 +19,19 @@ class ButtonAgregarVehiculo extends StatelessWidget {
           right: 20.0
         ),
         height: 50.0,
-        width: 150.0,
+        width: 130.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: Color(0xFF584CD1)
+          color: Colors.orange[600]
         ),
         child: Center(
           child: Text(
-            "Agregar Vehiculo",
+            "Agregar",
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: 21.0,
               fontFamily: "Lato",
-              color: Colors.white
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ),

@@ -59,7 +59,7 @@ class _Autolog extends State<Autolog> {
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
             title: Text('NOTIFICATION'),
-            backgroundColor: Colors.deepOrangeAccent,
+            backgroundColor: Colors.teal[400],
           ),
         ],
         onTap: (index) {
