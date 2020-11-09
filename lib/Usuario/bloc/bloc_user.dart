@@ -2,6 +2,7 @@ import 'package:autolog/Usuario/model/usuario.dart';
 import 'package:autolog/Usuario/repository/cloud_firestore_api.dart';
 import 'package:autolog/Usuario/repository/cloud_firestore_repository.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
+import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:autolog/Vehiculo/ui/widgets/bannerVehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,6 +62,8 @@ class UserBloc implements Bloc {
   // 9. Agregar mantenimiento al vehiculo
   Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo) => _cloudFirestoreRepository.addMantenimiento(mantenimiento, idVehiculo);
 
+  // 10. Registrar mantenimiento realizado
+  Future<void> addRegistro(Registro registro, String idVehiculo, String idMantenimiento) => _cloudFirestoreRepository.addRegistro(registro, idVehiculo, idMantenimiento);
 
   @override
   void dispose() {

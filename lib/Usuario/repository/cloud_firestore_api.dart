@@ -1,3 +1,4 @@
+import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -70,7 +71,7 @@ class CloudFirestoreAPI {
     print(idVehiculo);
 
 
-    documentReference.doc(idVehiculo).collection('Mantenimiento').doc().set({
+    documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
       'tipoMantenimiento': mantenimiento.tipoMantenimiento,
       'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
       'ultimoServicio': mantenimiento.ultimoServicio,
@@ -84,6 +85,27 @@ class CloudFirestoreAPI {
     return null;
   }
 
+  Future<void> addRegistro(Registro registro, String idVehiculo, String idMantenimiento){
+    final User user = FirebaseAuth.instance.currentUser;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro');
+    print(registro);
+    print(idVehiculo);
+
+
+    documentReference.doc(idMantenimiento).collection('Registro').doc().set({
+      'tipoMantenimiento': registro.tipoMantenimiento,
+      'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
+      'fechaRealizado': registro.fechaRealizado,
+      'precioServicio': registro.precioServicio,
+      'descripcion': registro.descripcion,
+      'idMantenimiento': idMantenimiento
+
+    }).whenComplete((){
+      print('$registro.tipoMantenimiento created');
+    });
+
+    return null;
+  }
   
 
 }

@@ -71,7 +71,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
                   color: Colors.red,
                 ),
                 onPressed: (){
-                  //userBloc.deleteVehiculo(documentSnapshot.id);
+                  
                 }
               ),
             ],

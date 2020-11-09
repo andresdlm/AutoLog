@@ -6,8 +6,11 @@ import 'package:flutter/material.dart';
 
 class ListMantenimientos extends StatelessWidget {
   final String idVehiculo;
+  User user;
 
-  ListMantenimientos({Key key, this.idVehiculo}): super(key: key);
+  ListMantenimientos({Key key, this.idVehiculo}): super(key: key){
+    user = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {

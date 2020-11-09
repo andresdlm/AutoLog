@@ -10,32 +10,29 @@ class ViewVehiculo extends StatelessWidget {
   final String idVehiculo; 
   final User user = FirebaseAuth.instance.currentUser;
   String marca = '';
-
-  String modelo = "Ranger";
-  String color = "Blanco";
+  String modelo = '';
 
   ViewVehiculo({Key key, this.idVehiculo}): super(key: key) {
-    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
     Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
     car.then((DocumentSnapshot carSnapshot) => {
-      print(carSnapshot['marca']),
-      print(carSnapshot['modelo']),
-      print(carSnapshot['color']),
-      print(carSnapshot['year']),
-      print(carSnapshot['km']),
-      marca = carSnapshot['marca'],
-      print(marca),
+        marca = carSnapshot['marca'],
+        modelo = carSnapshot['modelo'],
     });
   }
   
   @override
   Widget build(BuildContext context) {
 
+    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+    car.then((DocumentSnapshot carSnapshot) => {
+      marca = carSnapshot['marca'],
+      modelo = carSnapshot['modelo'],
+    });
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(modelo),
+          title: Text(marca + " " + modelo),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Mantenimientos'),
