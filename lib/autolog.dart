@@ -31,6 +31,16 @@ class _Autolog extends State<Autolog> {
 @override
   Widget build(BuildContext context){
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Autolog",
+          style: TextStyle(
+            fontFamily: 'Lato',
+            fontSize: 23,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
 
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

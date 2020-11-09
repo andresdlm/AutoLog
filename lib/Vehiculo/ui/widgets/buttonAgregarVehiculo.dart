@@ -22,7 +22,7 @@ class ButtonAgregarVehiculo extends StatelessWidget {
         width: 150.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: Color(0xFF584CD1)
+          color: Color(0xFF2196F3)
         ),
         child: Center(
           child: Text(
