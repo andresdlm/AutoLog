@@ -47,7 +47,8 @@ class ButtonBlue extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.0,
               fontFamily: "Lato",
-              color: Colors.white
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
 
           ),
