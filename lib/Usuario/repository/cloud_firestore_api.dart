@@ -1,4 +1,5 @@
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
+import 'package:autolog/Vehiculo/model/mantenimiento.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -60,6 +61,25 @@ class CloudFirestoreAPI {
       print('$item deleted');
     });
 
+  }
+
+  Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo){
+    final User user = FirebaseAuth.instance.currentUser;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
+
+
+    documentReference.doc(idVehiculo).collection('Mantenimiento').doc().set({
+      'tipoMantenimiento': mantenimiento.tipoMantenimiento,
+      'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
+      'ultimoServicio': mantenimiento.ultimoServicio,
+      'descripcion': mantenimiento.descripcion,
+      'idVehiculo': idVehiculo
+
+    }).whenComplete((){
+      print('$mantenimiento.tipoMantenimiento created');
+    });
+
+    return null;
   }
 
   

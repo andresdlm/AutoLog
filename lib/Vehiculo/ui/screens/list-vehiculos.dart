@@ -20,16 +20,11 @@ class ListVehiculos extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Container(
+          child: TitleHeader(title: "Mis Vehículos"),
+          margin: EdgeInsets.only(left: 10, top: 15),
+        ),
         
-        Row(
-          children: [
-            Container(
-              child: TitleHeader(title: "Mis Vehículos"),
-              margin: EdgeInsets.only(left: 10),
-            ),
-            ButtonAgregarVehiculo(),
-          ],
-        ),   
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').snapshots(),
           builder: (context, snapshots){
@@ -41,9 +36,12 @@ class ListVehiculos extends StatelessWidget {
                       itemCount: snapshots.data.docs.length,
                       itemBuilder: (context, index){
                             DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
-                            return Dismissible(
-                              onDismissed: (direction){
-                                //deleteTodos(documentSnapshot.id);
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ViewVehiculo())
+                                );
                               },
                               key: Key(documentSnapshot['modelo']),
                               child: Card(
@@ -53,7 +51,7 @@ class ListVehiculos extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8)),
                                 child: ListTile(
                                   dense: true,
-                                  leading: Icon(Icons.keyboard),
+                                  leading: Icon(Icons.car_rental),
                                   title:Text('${documentSnapshot['marca']} ${documentSnapshot['modelo']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),),
                                   subtitle:Text(documentSnapshot['color'],style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
                                   trailing: Wrap(
@@ -94,7 +92,7 @@ class ListVehiculos extends StatelessWidget {
               default: return Text("Loading data");
             }
           }),
-          //Align(alignment: Alignment.bottomCenter, child: ButtonAgregarVehiculo(),),  
+          Align(alignment: Alignment.bottomCenter, child: ButtonAgregarVehiculo(),),  
       ],  
     );
   }

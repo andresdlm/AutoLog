@@ -1,5 +1,4 @@
-  import 'package:flutter/material.dart';
-import 'package:autolog/Usuario/model/usuario.dart';
+import 'package:flutter/material.dart';
 
 class Vehiculo {
   String id;
