@@ -5,31 +5,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ListMantenimientos extends StatelessWidget {
+  final String idVehiculo;
 
-  String idVehiculo;  
-  final User user = FirebaseAuth.instance.currentUser;
+  ListMantenimientos({Key key, this.idVehiculo}): super(key: key);
 
-
-  ListMantenimientos({Key key, this.idVehiculo}): super(key: key) {
-    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
-    Future<DocumentSnapshot> vehiculo = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
-    vehiculo.then((DocumentSnapshot carSnapshot) => {
-      
-    });
-  }
-
-  
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddMantenimientoScreen()));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF2196F3),
+      floatingActionButton: Container(
+          height: 100.0,
+          width: 100.0,
+          child: Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddMantenimientoScreen(idVehiculo: idVehiculo,)));
+              },
+              child: Icon(Icons.add, size: 40),
+              backgroundColor: Color(0xFF2196F3),
+              elevation: 10.0,
+              ) 
+          ),
       ),
+          
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Mantenimientos").snapshots(),
