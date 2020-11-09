@@ -40,7 +40,7 @@ class ListVehiculos extends StatelessWidget {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ViewVehiculo())
+                                  MaterialPageRoute(builder: (context) => ViewVehiculo(idVehiculo: documentSnapshot.id.toString()))
                                 );
                               },
                               key: Key(documentSnapshot['modelo']),

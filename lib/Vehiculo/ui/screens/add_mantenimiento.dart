@@ -7,17 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class AddMantenimientoScreen extends StatefulWidget {
-  @override
+final String idVehiculo;
+  AddMantenimientoScreen({Key key, this.idVehiculo}){
+    print(idVehiculo);
+  }
+
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _AddMantenimientoScreen();
+    return _AddMantenimientoScreen(idVehiculo: idVehiculo);
   }
 }
 
-class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
+class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
+  final String idVehiculo;
+  _AddMantenimientoScreen({this.idVehiculo});
   @override
+  int _value = 3;
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // TODO: implement buil
 
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
 
@@ -53,9 +60,39 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
             ],
           ),
           Container(
+            padding: EdgeInsets.all(20.0),
+            child: DropdownButton(
+              value: _value,
+              items: [
+                  DropdownMenuItem(
+                    child: Text("First Item"),
+                    value: 1,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Second Item"),
+                    value: 2,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Third Item"),
+                    value: 3
+                  ),
+                  DropdownMenuItem(
+                      child: Text("Fourth Item"),
+                      value: 4
+                  )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                });
+              }
+            ),
+          ),
+
+          Container(
             margin: EdgeInsets.only(top: 15, bottom: 5),
             child: TextInput(
-              hintText: "Marca",
+              hintText: "Tipo de Mantenimiento",
               inputType: null,
               maxLines: 1,
               controller: _controllerTipoMantenimiento,
@@ -64,7 +101,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
           Container(
             margin: EdgeInsets.only(top: 5, bottom: 5),
             child: TextInput(
-              hintText: "Modelo",
+              hintText: "Frecuencia",
               inputType: null,
               maxLines: 1,
               controller: _controllerFrecuenciaKM,
@@ -73,7 +110,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
           Container(
             margin: EdgeInsets.only(top: 5, bottom: 5),
             child: TextInput(
-              hintText: "Año",
+              hintText: "Ultimo Servicio",
               inputType: null,
               maxLines: 1,
               controller: _controllerUltimoServicio,
@@ -82,7 +119,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
           Container(
             margin: EdgeInsets.only(top: 5, bottom: 5),
             child: TextInput(
-              hintText: "Color",
+              hintText: "Descripcion",
               inputType: null,
               maxLines: 1,
               controller: _controllerDescripcion,
@@ -96,11 +133,12 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen> {
                 userBloc.addMantenimiento(
                   Mantenimiento(
                     tipoMantenimiento: _controllerTipoMantenimiento.text,
-                    frecuenciaMantenimiento: int.parse(_controllerTipoMantenimiento.text),
+                    frecuenciaMantenimiento: int.parse(_controllerFrecuenciaKM.text),
                     ultimoServicio: int.parse(_controllerUltimoServicio.text),
                     descripcion: _controllerDescripcion.text
                   ), 
-                  "");
+                  idVehiculo
+                );
                 Navigator.pop(context);
               },
             ),

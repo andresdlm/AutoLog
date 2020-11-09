@@ -66,6 +66,8 @@ class CloudFirestoreAPI {
   Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
+    print(mantenimiento);
+    print(idVehiculo);
 
 
     documentReference.doc(idVehiculo).collection('Mantenimiento').doc().set({

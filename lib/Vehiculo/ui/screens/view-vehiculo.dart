@@ -9,8 +9,8 @@ class ViewVehiculo extends StatelessWidget {
 
   final String idVehiculo; 
   final User user = FirebaseAuth.instance.currentUser;
+  String marca = '';
 
-  String marca = "Ford";
   String modelo = "Ranger";
   String color = "Blanco";
 
@@ -23,6 +23,8 @@ class ViewVehiculo extends StatelessWidget {
       print(carSnapshot['color']),
       print(carSnapshot['year']),
       print(carSnapshot['km']),
+      marca = carSnapshot['marca'],
+      print(marca),
     });
   }
   
@@ -33,7 +35,7 @@ class ViewVehiculo extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(marca + ' ' + modelo),
+          title: Text(modelo),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Mantenimientos'),
@@ -44,11 +46,26 @@ class ViewVehiculo extends StatelessWidget {
         ),
         body:  TabBarView(
           children: [
-            ListMantenimientos(),
+            ListMantenimientos(idVehiculo: idVehiculo,),
             ListRegistroMantenimientos(),
           ],
         ),
       ),
     ); 
+  }
+
+  String funcion(){
+    String marca;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
+    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+    car.then((DocumentSnapshot carSnapshot) => {
+      marca = carSnapshot['marca'],
+      print(carSnapshot['marca']),
+      print(carSnapshot['modelo']),
+      print(carSnapshot['color']),
+      print(carSnapshot['year']),
+      print(carSnapshot['km']),
+    });
+    return marca;
   }
 }
