@@ -4,7 +4,6 @@ import 'package:autolog/Usuario/repository/cloud_firestore_repository.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
 import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
-import 'package:autolog/Vehiculo/ui/widgets/bannerVehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';

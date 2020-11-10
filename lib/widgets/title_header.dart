@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class TitleHeader extends StatelessWidget {
 
   final String title;
+  double fontSize = 30;
 
-  TitleHeader({Key key, @required this.title});
+  TitleHeader({Key key, @required this.title, double this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class TitleHeader extends StatelessWidget {
       title,
       style: TextStyle(
         color: Colors.black,
-        fontSize: 30.0,
+        fontSize: fontSize,
         fontFamily: "Lato",
         fontWeight: FontWeight.bold
       ),

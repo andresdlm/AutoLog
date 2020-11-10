@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CardMantenimiento extends StatefulWidget {
+class CardRegistro extends StatefulWidget {
 
   final DocumentSnapshot documentSnapshot;
   final VoidCallback onPressed;
 
-  CardMantenimiento({Key key, @required this.documentSnapshot, this.onPressed});
+  CardRegistro({Key key, @required this.documentSnapshot, this.onPressed});
 
   @override
-  _CardMantenimientoState createState() => _CardMantenimientoState(key: this.key, documentSnapshot: this.documentSnapshot, onPressed: this.onPressed);
+  _CardRegistroState createState() => _CardRegistroState(key: this.key, documentSnapshot: this.documentSnapshot, onPressed: this.onPressed);
 }
 
-class _CardMantenimientoState extends State<CardMantenimiento> {
+class _CardRegistroState extends State<CardRegistro> {
 
   final DocumentSnapshot documentSnapshot;
   final VoidCallback onPressed;
 
-  _CardMantenimientoState({Key key, @required this.documentSnapshot, this.onPressed});
+  _CardRegistroState({Key key, @required this.documentSnapshot, this.onPressed});
 
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: widget.onPressed,
-      key: Key(documentSnapshot['tipoMantenimiento']),
       child: Card(
         elevation: 10,  
         margin: EdgeInsets.all(8),
@@ -33,7 +32,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
           dense: true,
           leading: Icon(Icons.car_repair),
           title:Text(
-            widget.documentSnapshot['tipoMantenimiento'],
+            widget.documentSnapshot['fechaRealizado'],
             style: TextStyle(
               fontSize: 18,
               fontFamily: 'Lato',
@@ -41,7 +40,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
             ),
           ),
           subtitle:Text(
-            'Se realiza cada: ${documentSnapshot['frecuenciaMantenimiento']} Km\nUltimo servicio: ${documentSnapshot['ultimoServicio']} Km',
+            'Realizado a los: ${documentSnapshot['kilometrajeMantenimiento']} Km\nCosto: ${documentSnapshot['precioServicio']} dolares\nDescripción: ${documentSnapshot['descripcion']}',
             style: TextStyle(
               fontSize: 14,
               fontFamily: 'Lato',

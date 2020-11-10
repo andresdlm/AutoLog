@@ -1,26 +1,28 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
+import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/widgets/button_blue.dart';
 import 'package:autolog/widgets/text_input.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-class AddMantenimientoScreen extends StatefulWidget {
+class AddRegistroScreen extends StatefulWidget {
 final String idVehiculo;
-  AddMantenimientoScreen({Key key, this.idVehiculo}){
+  AddRegistroScreen({Key key, this.idVehiculo}){
     print(idVehiculo);
   }
 
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _AddMantenimientoScreen(idVehiculo: idVehiculo);
+    return _AddRegistroScreen(idVehiculo: idVehiculo);
   }
 }
 
-class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
+class _AddRegistroScreen extends State<AddRegistroScreen>{
   final String idVehiculo;
-  _AddMantenimientoScreen({this.idVehiculo});
+  final String idMantenimiento;
+  _AddRegistroScreen({this.idVehiculo, this.idMantenimiento});
   @override
   int _value = 3;
   Widget build(BuildContext context) {
@@ -29,13 +31,14 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
 
     final _controllerTipoMantenimiento = TextEditingController();
-    final _controllerFrecuenciaKM = TextEditingController();
-    final _controllerUltimoServicio = TextEditingController();
-    final _controllerDescripcion = TextEditingController();
+    final _controllerKilometrajeMantenimiento = TextEditingController();
+    final _controllerfechaRealizado = TextEditingController();
+    final _controllerPrecioServicio = TextEditingController();
+    final _controllerdescripcion = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
-        title: TitleHeader(title: "Agregar mantenimiento", fontSize: 26,),
+        title: TitleHeader(title: "Registrar servicio"),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -48,7 +51,10 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(top: 15, bottom: 5),
+
+              // Dropdown de tipo de mantenimiento
               child: DropdownButton(
+                
                 value: _value,
                 items: [
                     DropdownMenuItem(
@@ -77,30 +83,30 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
             ),
 
             Container(
-              margin: EdgeInsets.only(top: 15, bottom: 5),
+              margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Tipo de Mantenimiento",
+                hintText: "Kilometraje del servicio",
                 inputType: null,
                 maxLines: 1,
-                controller: _controllerTipoMantenimiento,
+                controller: _controllerKilometrajeMantenimiento,
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Frecuencia",
+                hintText: "Fecha",
                 inputType: null,
                 maxLines: 1,
-                controller: _controllerFrecuenciaKM,
+                controller: _controllerfechaRealizado,
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Ultimo Servicio",
+                hintText: "Costo",
                 inputType: null,
                 maxLines: 1,
-                controller: _controllerUltimoServicio,
+                controller: _controllerPrecioServicio,
               ),
             ),
             Container(
@@ -109,7 +115,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
                 hintText: "Descripcion",
                 inputType: null,
                 maxLines: 1,
-                controller: _controllerDescripcion,
+                controller: _controllerdescripcion,
               ),
             ),
             Container(
@@ -117,14 +123,16 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
               child: ButtonBlue(
                 buttonText: "Agregar Mantenimiento",
                 onPressed: () {
-                  userBloc.addMantenimiento(
-                    Mantenimiento(
+                  userBloc.addRegistro(
+                    Registro(
                       tipoMantenimiento: _controllerTipoMantenimiento.text,
-                      frecuenciaMantenimiento: int.parse(_controllerFrecuenciaKM.text),
-                      ultimoServicio: int.parse(_controllerUltimoServicio.text),
-                      descripcion: _controllerDescripcion.text
+                      kilometrajeMantenimiento: int.parse(_controllerKilometrajeMantenimiento.text),
+                      fechaRealizado: _controllerfechaRealizado.text,
+                      precioServicio: int.parse(_controllerPrecioServicio.text),
+                      descripcion: _controllerdescripcion.text
                     ), 
-                    idVehiculo
+                    idVehiculo,
+                    idMantenimiento
                   );
                   Navigator.pop(context);
                 },
