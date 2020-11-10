@@ -125,7 +125,8 @@ class RegisterScreen extends StatelessWidget{
                           text: Text('Log In', style: TextStyle(color: Colors.white),
                           ),
                           icon: Icon(
-                            Icons.login_rounded
+                            Icons.login_rounded,
+                            color: Colors.white
                           ),
                         ),
                         SizedBox(

@@ -13,6 +13,40 @@ class ListMantenimientos extends StatelessWidget {
     user = FirebaseAuth.instance.currentUser;
   }
 
+  int kilometraje = 4000;
+  int kilometrajeAnterior = 2000;
+  int frecuencia = 1000;
+
+  bool notificaciones(){
+     bool notificar;
+      Future<DocumentSnapshot> mantenimiento = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc('XT7wO3nwYiWM3tkXprJO').get();
+      mantenimiento.then((DocumentSnapshot mantenimientoSnapshot){
+        print('Frecuencia: ${mantenimientoSnapshot['frecuenciaMantenimiento']}');
+        print('ESTA ES LA FRECUENCIA: ${frecuencia = mantenimientoSnapshot['frecuenciaMantenimiento']}');
+        frecuencia = mantenimientoSnapshot['frecuenciaMantenimiento'];
+      });
+     Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+      car.then((DocumentSnapshot carSnapshot) => {
+        print('Kilometraje: ${carSnapshot['kilometraje']}'),
+        print('Km Anterior: ${carSnapshot['kilometrajeAnterior']}'),
+        kilometraje = carSnapshot['kilometraje'],
+        kilometrajeAnterior = carSnapshot['kilometrajeAnterior'],
+        print('ESTE ES EL KILOMETRAJEE: ${kilometraje-kilometrajeAnterior}'),
+      });
+      
+     
+      if(kilometraje-kilometrajeAnterior >= frecuencia){
+        print("Entre aqui");
+        notificar=true;
+        return notificar;
+      }
+      else{
+        print("Estoy entrando aqui no se por que");
+        notificar = false;
+        return notificar;
+      }
+  }
+
   updateKm(String idVehiculo){
       CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
 

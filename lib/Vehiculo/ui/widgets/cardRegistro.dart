@@ -30,7 +30,7 @@ class _CardRegistroState extends State<CardRegistro> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: ListTile(
           dense: true,
-          leading: Icon(Icons.car_repair),
+          leading: Icon(Icons.plumbing, size:40.0),
           title:Text(
             widget.documentSnapshot['fechaRealizado'],
             style: TextStyle(
@@ -51,7 +51,7 @@ class _CardRegistroState extends State<CardRegistro> {
           trailing: Wrap(
             spacing: -5,
             children: <Widget>[
-              IconButton(
+             /* IconButton(
                 padding: const EdgeInsets.only(top: 0),
                 icon: Icon(
                   Icons.settings,
@@ -61,7 +61,7 @@ class _CardRegistroState extends State<CardRegistro> {
                 onPressed: () {
 
                 },
-              ),
+              ), */
               IconButton(
                 padding: const EdgeInsets.only(top: 0),
                 icon: Icon(

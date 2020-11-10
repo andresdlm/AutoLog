@@ -36,7 +36,13 @@ class ListRegistroMantenimientos extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Registro").snapshots(),
         builder: (context, snapshots) {
-          if(snapshots.data == null) return CircularProgressIndicator();
+          if(snapshots.data == null) 
+          return Container( 
+                padding: EdgeInsets.only(top: 250.0),
+                child: Center(
+                      child: CircularProgressIndicator()
+                ),
+            );
           return ListView.builder(
             shrinkWrap: true,
             itemCount: snapshots.data.docs.length,
