@@ -34,8 +34,10 @@ class ViewVehiculo extends StatelessWidget {
         appBar: AppBar(
           title: Text(marca + " " + modelo),
           bottom: TabBar(
+            indicatorColor: Colors.white,
+            labelStyle: TextStyle(fontSize: 22.0),
             tabs: [
-              Tab(text: 'Mantenimientos'),
+              Tab(text: 'Notificaciones',),
               Tab(text: 'Registro',),
             ],
           ),
