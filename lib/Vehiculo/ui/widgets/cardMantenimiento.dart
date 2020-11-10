@@ -11,7 +11,7 @@ class CardMantenimiento extends StatefulWidget {
   CardMantenimiento({Key key, @required this.documentSnapshot, this.onPressed, this.idVehiculo});
 
   @override
-  _CardMantenimientoState createState() => _CardMantenimientoState(key: this.key, documentSnapshot: this.documentSnapshot, onPressed: this.onPressed);
+  _CardMantenimientoState createState() => _CardMantenimientoState(key: this.key, documentSnapshot: this.documentSnapshot, onPressed: this.onPressed, idVehiculo: this.idVehiculo);
 }
 
 class _CardMantenimientoState extends State<CardMantenimiento> {
@@ -22,7 +22,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
 
   _CardMantenimientoState({Key key, @required this.documentSnapshot, this.onPressed, this.idVehiculo});
   
-   deleteVehiculo(item){
+  deleteMantenimiento(item){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
 
@@ -84,7 +84,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
                   color: Colors.red,
                 ),
                 onPressed: (){
-                  deleteVehiculo(documentSnapshot.id);
+                  deleteMantenimiento(documentSnapshot.id);
                 }
               ),
             ],

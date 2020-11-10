@@ -44,7 +44,8 @@ class CloudFirestoreAPI {
       'modelo': vehiculo.modelo,
       'year': vehiculo.year,
       'color': vehiculo.color,
-      'km': vehiculo.kilometraje,
+      'kilometraje': vehiculo.kilometraje,
+      'kilometrajeAnterior': vehiculo.kilometraje,
       'owner': user.uid,
 
     }).whenComplete((){
@@ -85,20 +86,19 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  Future<void> addRegistro(Registro registro, String idVehiculo, String idMantenimiento){
+  Future<void> addRegistro(Registro registro, String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro');
     print(registro);
     print(idVehiculo);
 
 
-    documentReference.doc(idMantenimiento).collection('Registro').doc().set({
+    documentReference.doc().set({
       'tipoMantenimiento': registro.tipoMantenimiento,
       'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
       'fechaRealizado': registro.fechaRealizado,
       'precioServicio': registro.precioServicio,
       'descripcion': registro.descripcion,
-      'idMantenimiento': idMantenimiento
 
     }).whenComplete((){
       print('$registro.tipoMantenimiento created');

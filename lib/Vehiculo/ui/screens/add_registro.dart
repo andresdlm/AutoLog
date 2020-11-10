@@ -21,8 +21,8 @@ final String idVehiculo;
 
 class _AddRegistroScreen extends State<AddRegistroScreen>{
   final String idVehiculo;
-  final String idMantenimiento;
-  _AddRegistroScreen({this.idVehiculo, this.idMantenimiento});
+
+  _AddRegistroScreen({this.idVehiculo});
   @override
   int _value = 3;
   Widget build(BuildContext context) {
@@ -85,6 +85,15 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
+                hintText: "Tipo de mantenimiento",
+                inputType: null,
+                maxLines: 1,
+                controller: _controllerTipoMantenimiento,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5, bottom: 5),
+              child: TextInput(
                 hintText: "Kilometraje del servicio",
                 inputType: null,
                 maxLines: 1,
@@ -132,7 +141,7 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
                       descripcion: _controllerdescripcion.text
                     ), 
                     idVehiculo,
-                    idMantenimiento
+                    //idMantenimiento
                   );
                   Navigator.pop(context);
                 },

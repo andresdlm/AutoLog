@@ -18,6 +18,6 @@ class CloudFirestoreRepository {
 
   Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo) => _cloudFirestoreAPI.addMantenimiento(mantenimiento, idVehiculo);
 
-  Future<void> addRegistro(Registro registro, String idVehiculo, String idMantenimiento) => _cloudFirestoreAPI.addRegistro(registro, idVehiculo, idMantenimiento);
+  Future<void> addRegistro(Registro registro, String idVehiculo) => _cloudFirestoreAPI.addRegistro(registro, idVehiculo);
 
 }

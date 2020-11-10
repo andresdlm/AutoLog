@@ -16,7 +16,7 @@ class ListMantenimientos extends StatelessWidget {
   updateKm(String idVehiculo){
       CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
 
-      Map<String, int> todos={'km': Km};
+      Map<String, int> todos={'kilometraje': Km};
 
       documentReference.doc(idVehiculo).update(todos).whenComplete((){
         print('$Km, Actualizado');
@@ -115,7 +115,7 @@ class ListMantenimientos extends StatelessWidget {
             itemCount: snapshots.data.docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
-              return CardMantenimiento(documentSnapshot: documentSnapshot);
+              return CardMantenimiento(documentSnapshot: documentSnapshot, idVehiculo: idVehiculo,);
             },
           );
         },

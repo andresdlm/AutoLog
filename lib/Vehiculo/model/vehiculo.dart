@@ -7,6 +7,7 @@ class Vehiculo {
   int year;
   String color;
   int kilometraje;
+  int kilometrajeAnterior;
   //User userOwner;
 
   
@@ -18,6 +19,7 @@ class Vehiculo {
     @required this.year,
     @required this.color,
     @required this.kilometraje,
+    this.kilometrajeAnterior
     //@required this.userOwner
   });
   

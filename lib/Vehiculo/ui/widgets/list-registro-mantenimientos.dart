@@ -34,7 +34,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Mantenimientos").doc(idMantenimiento).collection("Registro").snapshots(),
+        stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Registro").snapshots(),
         builder: (context, snapshots) {
           if(snapshots.data == null) return CircularProgressIndicator();
           return ListView.builder(

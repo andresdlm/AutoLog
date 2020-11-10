@@ -21,7 +21,7 @@ class ListVehiculos extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          child: TitleHeader(title: "Mis Vehículos"),
+          child: TitleHeader(title: "Mis Vehículos", fontSize: 30,),
           margin: EdgeInsets.only(left: 10, top: 15, bottom: 15),
         ),
         
@@ -47,7 +47,7 @@ class ListVehiculos extends StatelessWidget {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ViewVehiculo(idVehiculo: documentSnapshot.id.toString()))
+                                  MaterialPageRoute(builder: (context) => ViewVehiculo(idVehiculo: documentSnapshot.id.toString(), marca: documentSnapshot['marca'], modelo: documentSnapshot['modelo']))
                                 );
                               },
                               key: Key(documentSnapshot['modelo']),

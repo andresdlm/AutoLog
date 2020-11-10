@@ -12,22 +12,14 @@ class ViewVehiculo extends StatelessWidget {
   String marca = '';
   String modelo = '';
 
-  ViewVehiculo({Key key, this.idVehiculo}): super(key: key) {
-    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
-    car.then((DocumentSnapshot carSnapshot) => {
-        marca = carSnapshot['marca'],
-        modelo = carSnapshot['modelo'],
-    });
+  ViewVehiculo({Key key, this.idVehiculo, this.marca, this.modelo}): super(key: key){
+    print(marca);
+    print(modelo);
   }
   
   @override
   Widget build(BuildContext context) {
 
-    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
-    car.then((DocumentSnapshot carSnapshot) => {
-      marca = carSnapshot['marca'],
-      modelo = carSnapshot['modelo'],
-    });
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -46,7 +38,7 @@ class ViewVehiculo extends StatelessWidget {
         body:  TabBarView(
           children: [
             ListMantenimientos(idVehiculo: idVehiculo,),
-            ListRegistroMantenimientos(),
+            ListRegistroMantenimientos(idVehiculo: idVehiculo,),
           ],
         ),
       ),
