@@ -22,13 +22,20 @@ class ListVehiculos extends StatelessWidget {
       children: <Widget>[
         Container(
           child: TitleHeader(title: "Mis Vehículos"),
-          margin: EdgeInsets.only(left: 10, top: 15),
+          margin: EdgeInsets.only(left: 10, top: 15, bottom: 15),
         ),
         
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').snapshots(),
           builder: (context, snapshots){
-            if(snapshots.data == null) return CircularProgressIndicator();
+            if(snapshots.data == null) 
+            return Container( 
+                padding: EdgeInsets.only(top: 250.0),
+                child: Center(
+                      child: CircularProgressIndicator()
+                    ),
+            );
+                
             switch(snapshots.connectionState){
               case ConnectionState.active:            
                   return ListView.builder(
@@ -49,9 +56,10 @@ class ListVehiculos extends StatelessWidget {
                                 margin: EdgeInsets.all(8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),
+                                  color: Colors.blue[100],
                                 child: ListTile(
                                   dense: true,
-                                  leading: Icon(Icons.car_rental),
+                                  leading: Icon(Icons.directions_car, size: 40),
                                   title:Text('${documentSnapshot['marca']} ${documentSnapshot['modelo']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),),
                                   subtitle:Text(documentSnapshot['color'],style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
                                   trailing: Wrap(

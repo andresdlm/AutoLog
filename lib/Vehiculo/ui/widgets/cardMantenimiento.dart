@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CardMantenimiento extends StatefulWidget {
 
   final DocumentSnapshot documentSnapshot;
   final VoidCallback onPressed;
+  final String idVehiculo;
 
-  CardMantenimiento({Key key, @required this.documentSnapshot, this.onPressed});
+  CardMantenimiento({Key key, @required this.documentSnapshot, this.onPressed, this.idVehiculo});
 
   @override
   _CardMantenimientoState createState() => _CardMantenimientoState(key: this.key, documentSnapshot: this.documentSnapshot, onPressed: this.onPressed);
@@ -16,9 +18,19 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
 
   final DocumentSnapshot documentSnapshot;
   final VoidCallback onPressed;
+  final String idVehiculo;
 
-  _CardMantenimientoState({Key key, @required this.documentSnapshot, this.onPressed});
+  _CardMantenimientoState({Key key, @required this.documentSnapshot, this.onPressed, this.idVehiculo});
+  
+   deleteVehiculo(item){
+    final User user = FirebaseAuth.instance.currentUser;
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
 
+    documentReference.doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc(item).delete().whenComplete((){
+      print('$item deleted');
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +41,10 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
         elevation: 10,  
         margin: EdgeInsets.all(8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: Colors.blue[100],
         child: ListTile(
           dense: true,
-          leading: Icon(Icons.car_repair),
+          leading: Icon(Icons.access_alarm, size:40),
           title:Text(
             widget.documentSnapshot['tipoMantenimiento'],
             style: TextStyle(
@@ -52,7 +65,7 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
           trailing: Wrap(
             spacing: -5,
             children: <Widget>[
-              IconButton(
+              /*IconButton(
                 padding: const EdgeInsets.only(top: 0),
                 icon: Icon(
                   Icons.settings,
@@ -62,16 +75,16 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
                 onPressed: () {
 
                 },
-              ),
+              ),*/
               IconButton(
                 padding: const EdgeInsets.only(top: 0),
                 icon: Icon(
-                  Icons.delete,
+                  Icons.notifications_off,
                   size: 35,
                   color: Colors.red,
                 ),
                 onPressed: (){
-                  //userBloc.deleteVehiculo(documentSnapshot.id);
+                  deleteVehiculo(documentSnapshot.id);
                 }
               ),
             ],
