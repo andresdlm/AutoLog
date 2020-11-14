@@ -55,7 +55,7 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  deleteTodos(String item){
+  deleteVehiculo(String item){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
 
@@ -71,7 +71,7 @@ class CloudFirestoreAPI {
     print(mantenimiento);
     print(idVehiculo);
 
-
+    
     documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
       'tipoMantenimiento': mantenimiento.tipoMantenimiento,
       'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,

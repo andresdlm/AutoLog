@@ -1,3 +1,4 @@
+//TODO ESTO SE PASO A LIST-MANTENIMIENTO 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class _CardMantenimientoState extends State<CardMantenimiento> {
 
     documentReference.doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc(item).delete().whenComplete((){
       print('$item deleted');
+      print('Id del Vehiculo: $idVehiculo');
+      print('El user Uid es: $user.uid');
     });
 
   }
