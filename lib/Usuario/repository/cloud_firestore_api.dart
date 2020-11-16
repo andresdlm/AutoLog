@@ -77,7 +77,8 @@ class CloudFirestoreAPI {
       'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
       'ultimoServicio': mantenimiento.ultimoServicio,
       'descripcion': mantenimiento.descripcion,
-      'idVehiculo': idVehiculo
+      'idVehiculo': idVehiculo,
+      'prioridad': '',
 
     }).whenComplete((){
       print('$mantenimiento.tipoMantenimiento created');
@@ -86,23 +87,38 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  Future<void> addRegistro(Registro registro, String idVehiculo){
+  Future<void> addRegistro(Registro registro, String idVehiculo) async{
+    int kilometraje;
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro');
     print(registro);
     print(idVehiculo);
 
+    if(registro.kilometrajeMantenimiento == null){
+      Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+      await car.then((DocumentSnapshot carSnapshot) => {
+        kilometraje = carSnapshot['kilometraje'],
+      });
+      documentReference.doc().set({
+        'tipoMantenimiento': registro.tipoMantenimiento,
+        'kilometrajeMantenimiento': kilometraje,
+        'fechaRealizado': registro.fechaRealizado,
+        'precioServicio': registro.precioServicio,
+        'descripcion': registro.descripcion,
+      });
+    }else{
+      documentReference.doc().set({
+        'tipoMantenimiento': registro.tipoMantenimiento,
+        'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
+        'fechaRealizado': registro.fechaRealizado,
+        'precioServicio': registro.precioServicio,
+        'descripcion': registro.descripcion,
 
-    documentReference.doc().set({
-      'tipoMantenimiento': registro.tipoMantenimiento,
-      'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
-      'fechaRealizado': registro.fechaRealizado,
-      'precioServicio': registro.precioServicio,
-      'descripcion': registro.descripcion,
-
-    }).whenComplete((){
-      print('$registro.tipoMantenimiento created');
-    });
+      }).whenComplete((){
+        print('$registro.tipoMantenimiento created');
+      });
+    }
+    
 
     return null;
   }

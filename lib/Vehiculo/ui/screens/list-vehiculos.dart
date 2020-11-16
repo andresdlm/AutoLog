@@ -56,7 +56,7 @@ class ListVehiculos extends StatelessWidget {
                                 margin: EdgeInsets.all(8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),
-                                  color: Colors.blue[100],
+                                  color: Colors.blue[100], //color de la tarjeta
                                 child: ListTile(
                                   dense: true,
                                   leading: Icon(Icons.directions_car, size: 40),

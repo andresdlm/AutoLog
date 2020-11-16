@@ -1,12 +1,19 @@
+import 'package:autolog/Usuario/bloc/bloc_user.dart';
+import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/ui/screens/add_mantenimiento.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:intl/intl.dart';
 
 class ListMantenimientos extends StatelessWidget {
   final String idVehiculo;
   User user;
   int Km;
+  int dollar;
+  String descrip;
 
   ListMantenimientos({Key key, this.idVehiculo}): super(key: key){
     user = FirebaseAuth.instance.currentUser;
@@ -16,9 +23,10 @@ class ListMantenimientos extends StatelessWidget {
   int kilometrajeAnterior;
   int frecuencia;
   int ultimoServicio;
+  List<Map> lista = [];
 
    Future <bool> notificaciones() async{
-     bool notificar;
+     bool notificar = false;
      Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
       await car.then((DocumentSnapshot carSnapshot) => {
         print('Kilometraje: ${carSnapshot['kilometraje']}'),
@@ -29,7 +37,7 @@ class ListMantenimientos extends StatelessWidget {
         print('ESTE ES EL KILOMETRAJEE ANTERIOR: ${kilometrajeAnterior}'),
       });
 
-      Future<DocumentSnapshot> notificacion = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc('nvq5nkMe3Fd403XaTCgk').get();
+      Future<DocumentSnapshot> notificacion = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc('aYro1BrPXF0vNWjUNpt2').get();
       await notificacion.then((DocumentSnapshot notificacionSnapshot)=>{
         print("frecuencia de matenimiento: ${notificacionSnapshot['frecuenciaMantenimiento']}"),
         print("ultimo servicio: ${notificacionSnapshot['ultimoServicio']}"),
@@ -44,31 +52,54 @@ class ListMantenimientos extends StatelessWidget {
       .get()
       .then((QuerySnapshot querySnapshot) =>{
         querySnapshot.docs.forEach((doc){
-          print(doc['tipoMantenimiento']);
+
+          String prioridad = updateprioridad(doc.id, doc['ultimoServicio'], kilometraje, doc['frecuenciaMantenimiento']);
+
+          if (kilometraje-doc['ultimoServicio'] >= doc['frecuenciaMantenimiento']){
+            
+            Map<String, dynamic> map ={'tipoMantenimiento': doc['tipoMantenimiento'], 
+              'frecuenciaMantenimiento': doc['frecuenciaMantenimiento'],
+              'descripcion': doc['descripcion'],
+              'ultimoServicio': doc['ultimoServicio'],
+              'prioridad': prioridad, 
+            };    
+
+            print(map);
+            lista.add(map);
+           for(var n in lista){
+              print(n);
+            }
+            notificar = true;
+          }
         }),
       });
-      
-      if(kilometraje-ultimoServicio >= frecuencia){
-        print("ENTRE EN EL IF");
-        notificar = true;
-        return true;
-      }
-      else{
-        print("ENTRE EN EL ELSE");
-        notificar = false;
-        return false;
-      }
-      /*if(kilometraje-kilometrajeAnterior >= frecuencia){
-        print("Entre aqui");
-        notificar=true;
-        return notificar;
-      }
-      else{
-        print("Estoy entrando aqui no se por que");
-        notificar = false;
-        return notificar;
-      }*/
+      return notificar;
+    
   }
+
+  updateprioridad(String idMantenimiento, int ultimoServicio, int kilimetraje, int frecuencia){
+    String prioridad ="";
+
+    if(kilometraje-ultimoServicio >= frecuencia){
+        if(kilometraje-ultimoServicio >= frecuencia && kilometraje-ultimoServicio <= frecuencia +1000)
+          prioridad = "BAJA";
+        else if(kilometraje-ultimoServicio > frecuencia + 1000 && kilometraje-ultimoServicio <= frecuencia + 3000)
+          prioridad = "MEDIA";
+        else if(kilometraje-ultimoServicio > frecuencia + 3000)
+          prioridad = "ALTA";
+    };
+
+    Map<String, dynamic> mapPrioridad ={'prioridad': prioridad };
+
+    FirebaseFirestore.instance.collection('Users').doc(user.uid).
+                                      collection('Car').doc(idVehiculo)
+                                      .collection('Mantenimientos').doc(idMantenimiento).update(mapPrioridad).whenComplete((){
+                                        print('$prioridad, Actualizado');
+    });  
+
+    return prioridad; 
+  }
+
 
   deleteMantenimiento(item){
     final User user = FirebaseAuth.instance.currentUser;
@@ -87,15 +118,64 @@ class ListMantenimientos extends StatelessWidget {
 
       Map<String, int> kilometraje={'kilometraje': Km};
 
+      print(Km);
       documentReference.doc(idVehiculo).update(kilometraje).whenComplete((){
         print('$Km, Actualizado');
         print(idVehiculo);
       });
   }
 
+  Future <void> updateUltimoServicio(String idVehiculo, String idMantenimiento) async{
+    int kilometraje;
+    print('ID VEHICULO: $idVehiculo');
+    print('ID MANTENIMIETNO: $idMantenimiento');
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).
+                                                                       collection('Car').doc(idVehiculo).
+                                                                       collection('Mantenimientos');
+
+    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+      await car.then((DocumentSnapshot carSnapshot) => {
+        kilometraje = carSnapshot['kilometraje'],
+        print('KILOMETRAJE $kilometraje'),
+      });
+      print('KILOMETRAJE $kilometraje');
+    Map<String, dynamic> mapMantenimiento={'ultimoServicio': kilometraje, 'prioridad': ''};
+    print(mapMantenimiento);
+
+    documentReference.doc(idMantenimiento).update(mapMantenimiento).whenComplete((){
+        print('Actualizado');
+        print(idVehiculo);
+      });
+
+                                                            
+
+  }
+
+  colorPorPrioridad(String prioridad) {
+      
+        if(prioridad == 'BAJA') 
+          return Colors.green[100];
+        else if(prioridad  == 'MEDIA') 
+          return Colors.orange[100];
+        else if(prioridad  == 'ALTA') 
+          return Colors.red[100];
+        else{
+          return Colors.blue[100];
+        }
+
+  }
+
+  seleccionarIcono(String prioridad){
+    if(prioridad == 'BAJA' || prioridad == 'MEDIA' || prioridad == 'ALTA')
+      return Icons.toggle_on;
+    else
+      return Icons.edit_attributes;
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
+    UserBloc userBloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       floatingActionButton: Container(
           height: 150,
@@ -115,32 +195,34 @@ class ListMantenimientos extends StatelessWidget {
                               builder: (BuildContext context){
                                 return  AlertDialog(
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                        contentPadding: EdgeInsets.all(30.0),
+                                        contentPadding: EdgeInsets.all(5.0), //padding de la cajita
                                         title: Text('Actualizar kilometraje'),
                                         elevation: 5.0,
                                         backgroundColor: Colors.blue[50],
-                                        content: new Column(
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            new Expanded(
-                                                child: new TextField(
+                                                new TextField(
                                                   decoration: new InputDecoration(
                                                       icon: Icon(Icons.update_rounded),
                                                       labelText: 'Km', hintText: '10000'),
                                                   onChanged: (String value) {
-                                                    Km = int.parse(value);
+                                                    Km = int.parse(value);  
                                                   },
-                                                )),
+                                                ),
                                           ],
                                         ),
                                         actions: <Widget>[
                                             FlatButton(
                                                 onPressed:(){
-                                                    updateKm(idVehiculo);
-                                                    Navigator.of(context).pop();
+                                                  if(Km != null){
+                                                    updateKm(idVehiculo);          
+                                                  }
+                                                  Navigator.of(context).pop();
                                                 },
-                                                child:Text('add'))
+                                                child:Text('add', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)))
                                         ],
-                                ); 
+                                );
                                
                                 
                               }
@@ -151,8 +233,44 @@ class ListMantenimientos extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: new Text('Tienes mantenimiento pendiente'),
+                                        backgroundColor: Colors.blue[50],
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                        title: new Text("ALERTA!\nMantenimientos Pentiendes\nkilometraje ${kilometraje} km\n",
+                                                          textAlign: TextAlign.center,
+                                                          //overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(color: Colors.red[500], fontWeight: FontWeight.bold, fontSize: 20.0)),
+                                        
+                                        content: SingleChildScrollView(
+                                          child: Column( 
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: List.generate(lista.length, (index){
+                                              return ListBody(
+                                                children: <Widget>[
+                                                  if(lista[index]['prioridad'] == 'BAJA') 
+                                                    Text('Prioridad: BAJA\n', textAlign: TextAlign.center, style: TextStyle(color: Colors.green[500], fontSize: 18.0, fontWeight: FontWeight.bold)),
+                                                  if(lista[index]['prioridad'] == 'MEDIA') 
+                                                    Text('Prioridad: MEDIA\n', textAlign: TextAlign.center, style: TextStyle(color: Colors.yellow[900], fontSize: 18.0, fontWeight: FontWeight.bold)),
+                                                  if(lista[index]['prioridad'] == 'ALTA') 
+                                                    Text('Prioridad: ALTA\n', textAlign: TextAlign.center, style: TextStyle(color: Colors.red[500], fontWeight: FontWeight.bold, fontSize: 18.0, )),
+
+                                                  Text('El mantenimiento "${lista[index]['tipoMantenimiento']}"', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
+                                                 // Text(lista[index]['ultimoServicio'].toString()),
+                                                  Text('Suele hacerse cada: ${lista[index]['frecuenciaMantenimiento'].toString()} km', textAlign: TextAlign.center,),
+                                                  Text('Ya ha recorrido: ${kilometraje-lista[index]['ultimoServicio']} km\n', textAlign: TextAlign.center,),
+                                                  //Text('Descripcion: ${lista[index]['descripcion']}km\n'),
+                                                  Text('----------------------------\n', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                                                ],
+                                              );
+                                            }),
+                                          ),
+                                        ),
                                         actions: <Widget>[
+                                            FlatButton(
+                                                onPressed:(){
+                                                  lista.clear();
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child:Text('OK', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0)))
                                         ],
                                       );
                                     },
@@ -160,14 +278,6 @@ class ListMantenimientos extends StatelessWidget {
                               }
                             });
                           });
-                         /* whenComplete((){
-                              if( notificaciones()){
-                                print("Entre porque RETORNE True");
-                              }
-                              else{
-                                print("Entre porque RETORNE False");
-                              }
-                          });*/
                       },
                       heroTag: null,
                       
@@ -211,13 +321,11 @@ class ListMantenimientos extends StatelessWidget {
                   itemCount: snapshots.data.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
-                    return InkWell(
-                      key: Key(documentSnapshot['tipoMantenimiento']),
-                      child: Card(
+                    var card = Card(
                         elevation: 10,  
                         margin: EdgeInsets.all(8),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        color: Colors.blue[100],
+                        color: colorPorPrioridad(documentSnapshot['prioridad']),
                         child: ListTile(
                           dense: true,
                           leading: Icon(Icons.access_alarm, size:40),
@@ -239,19 +347,81 @@ class ListMantenimientos extends StatelessWidget {
                           ),
                           
                           trailing: Wrap(
-                            spacing: -5,
+                            spacing: -1,
                             children: <Widget>[
-                              /*IconButton(
+                              IconButton(
                                 padding: const EdgeInsets.only(top: 0),
-                                icon: Icon(
-                                  Icons.settings,
-                                  size: 35,
+                                icon: Icon(seleccionarIcono(documentSnapshot['prioridad']),
+                                  size: 47,
                                   color: Colors.blue,
                                 ),
                                 onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context){
+                                          return  AlertDialog(
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                  contentPadding: EdgeInsets.all(5.0), //padding de la cajita
+                                                  title: Text('Marcar Notificación como Completada'),
+                                                  elevation: 5.0,
+                                                  backgroundColor: Colors.blue[50],
+                                                  content: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                          new TextField(
+                                                            decoration: new InputDecoration(
+                                                                icon: Icon(Icons.attach_money),
+                                                                labelText: 'Precio Servicio', hintText: '10€'),
+                                                            onChanged: (String value) {
+                                                              dollar = int.parse(value);  
+                                                            },
+                                                          ),
 
+                                                          new TextField(
+                                                            decoration: new InputDecoration(
+                                                                icon: Icon(Icons.description),
+                                                                labelText: 'Descripción', hintText: ''),
+                                                            onChanged: (String value) {
+                                                              descrip = value;  
+                                                            },
+                                                          ),
+
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                      FlatButton(
+                                                          onPressed:(){
+                                                            if(dollar != null && descrip != ""){
+                                                               userBloc.addRegistro(
+                                                                Registro(
+                                                                  tipoMantenimiento: documentSnapshot['tipoMantenimiento'],
+                                                                  kilometrajeMantenimiento: kilometraje,
+                                                                  fechaRealizado: DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(),
+                                                                  precioServicio: dollar,
+                                                                  descripcion: descrip
+                                                                ), 
+                                                                idVehiculo,
+                                                                //idMantenimiento
+                                                              ).whenComplete((){
+                                                                updateUltimoServicio(idVehiculo, documentSnapshot.id);
+                                                              });         
+                                                            }
+                                                              
+                                                              Navigator.pop(context);
+                                                            },
+                                                            
+                                                            //updateKm(idVehiculo);      
+                                                          
+                                                          child:Text('add', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)))
+                                                  ],
+                                          );
+                                        
+                                          
+                                        },
+                                    );
                                 },
-                              ),*/
+                              ),
+
                               IconButton(
                                 padding: const EdgeInsets.only(top: 0),
                                 icon: Icon(
@@ -266,7 +436,10 @@ class ListMantenimientos extends StatelessWidget {
                             ],
                           ),
                         )
-                      )
+                      );
+                    return InkWell(
+                      key: Key(documentSnapshot['tipoMantenimiento']),
+                      child: card
                     );
                   },
               );

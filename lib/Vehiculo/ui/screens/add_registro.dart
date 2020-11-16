@@ -130,7 +130,7 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               width: 350.0,
               child: ButtonBlue(
-                buttonText: "Agregar Mantenimiento",
+                buttonText: "Agregar Registro",
                 onPressed: () {
                   userBloc.addRegistro(
                     Registro(
