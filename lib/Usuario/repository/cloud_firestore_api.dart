@@ -71,7 +71,6 @@ class CloudFirestoreAPI {
     print(mantenimiento);
     print(idVehiculo);
 
-    
     documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
       'tipoMantenimiento': mantenimiento.tipoMantenimiento,
       'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
@@ -79,6 +78,7 @@ class CloudFirestoreAPI {
       'descripcion': mantenimiento.descripcion,
       'idVehiculo': idVehiculo,
       'prioridad': '',
+      'estadoNotificacion': true,
 
     }).whenComplete((){
       print('$mantenimiento.tipoMantenimiento created');

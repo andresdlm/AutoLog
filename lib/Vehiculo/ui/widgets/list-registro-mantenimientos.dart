@@ -78,7 +78,15 @@ class ListRegistroMantenimientos extends StatelessWidget {
                           color: Colors.blue[100], //color de la tarjeta
                           child: ListTile(
                             dense: true,
-                            leading: Icon(Icons.plumbing, size:40.0),
+                            leading: Builder(
+                            builder:(BuildContext context){
+                              return IconButton(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                icon: Icon(Icons.plumbing, size:40.0
+                                ),
+                              );
+                            },
+                          ),
                             title:Text(
                               '${documentSnapshot['fechaRealizado']}\n ${documentSnapshot['tipoMantenimiento']}',
                               style: TextStyle(

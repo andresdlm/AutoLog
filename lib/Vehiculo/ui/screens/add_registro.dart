@@ -49,7 +49,7 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
+            /*Container(
               margin: EdgeInsets.only(top: 15, bottom: 5),
 
               // Dropdown de tipo de mantenimiento
@@ -80,7 +80,7 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
                   });
                 }
               ),
-            ),
+            ),*/
 
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),

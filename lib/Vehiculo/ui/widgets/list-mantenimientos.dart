@@ -37,16 +37,6 @@ class ListMantenimientos extends StatelessWidget {
         print('ESTE ES EL KILOMETRAJEE ANTERIOR: ${kilometrajeAnterior}'),
       });
 
-      Future<DocumentSnapshot> notificacion = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos').doc('aYro1BrPXF0vNWjUNpt2').get();
-      await notificacion.then((DocumentSnapshot notificacionSnapshot)=>{
-        print("frecuencia de matenimiento: ${notificacionSnapshot['frecuenciaMantenimiento']}"),
-        print("ultimo servicio: ${notificacionSnapshot['ultimoServicio']}"),
-        frecuencia = notificacionSnapshot['frecuenciaMantenimiento'],
-        ultimoServicio = notificacionSnapshot['ultimoServicio'],
-        print('ESTA ES LA FRECUENCIA MANTENIMIENTO: ${frecuencia}'),
-        print('ESTE ES EL ULTIMO SERVICIO: ${ultimoServicio}'),
-      });
-
       await FirebaseFirestore.instance
       .collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos')
       .get()
@@ -55,7 +45,7 @@ class ListMantenimientos extends StatelessWidget {
 
           String prioridad = updateprioridad(doc.id, doc['ultimoServicio'], kilometraje, doc['frecuenciaMantenimiento']);
 
-          if (kilometraje-doc['ultimoServicio'] >= doc['frecuenciaMantenimiento']){
+          if (kilometraje-doc['ultimoServicio'] >= doc['frecuenciaMantenimiento'] && doc['estadoNotificacion'] == true){
             
             Map<String, dynamic> map ={'tipoMantenimiento': doc['tipoMantenimiento'], 
               'frecuenciaMantenimiento': doc['frecuenciaMantenimiento'],
@@ -94,7 +84,7 @@ class ListMantenimientos extends StatelessWidget {
     FirebaseFirestore.instance.collection('Users').doc(user.uid).
                                       collection('Car').doc(idVehiculo)
                                       .collection('Mantenimientos').doc(idMantenimiento).update(mapPrioridad).whenComplete((){
-                                        print('$prioridad, Actualizado');
+    print('$prioridad, Actualizado');
     });  
 
     return prioridad; 
@@ -145,10 +135,23 @@ class ListMantenimientos extends StatelessWidget {
     documentReference.doc(idMantenimiento).update(mapMantenimiento).whenComplete((){
         print('Actualizado');
         print(idVehiculo);
-      });
+      });                                                          
 
-                                                            
+  }
 
+  updateEstadoNotificacion(String idVehiculo, String idMantenimiento, bool estadonotificacion){
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).
+                                                                       collection('Car').doc(idVehiculo).
+                                                                       collection('Mantenimientos');
+      if(estadonotificacion == true){
+         Map<String, bool> mapEstadoNoti={'estadoNotificacion': false};
+         documentReference.doc(idMantenimiento).update(mapEstadoNoti);
+        
+      }else if (estadonotificacion == false){
+        Map<String, bool> mapEstadoNoti={'estadoNotificacion': true};
+        documentReference.doc(idMantenimiento).update(mapEstadoNoti);
+      }
+     
   }
 
   colorPorPrioridad(String prioridad) {
@@ -172,6 +175,12 @@ class ListMantenimientos extends StatelessWidget {
       return Icons.edit_attributes;
   }
 
+  seleccionarIcono2(bool estadoNotificacion){
+    if(estadoNotificacion == true)
+      return Icons.access_alarm;
+    else
+      return Icons.alarm_off;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +337,19 @@ class ListMantenimientos extends StatelessWidget {
                         color: colorPorPrioridad(documentSnapshot['prioridad']),
                         child: ListTile(
                           dense: true,
-                          leading: Icon(Icons.access_alarm, size:40),
+                          leading: Builder(
+                            builder:(BuildContext context){
+                              return IconButton(
+                                padding: const EdgeInsets.only(bottom: 3.0),
+                                icon: Icon(seleccionarIcono2(documentSnapshot['estadoNotificacion']),
+                                            size: 40,
+                                ),
+                                onPressed: (){
+                                  updateEstadoNotificacion(idVehiculo, documentSnapshot.id, documentSnapshot['estadoNotificacion']); 
+                                },
+                              );
+                            },
+                          ),      
                           title:Text(
                             documentSnapshot['tipoMantenimiento'],
                             style: TextStyle(
@@ -352,8 +373,8 @@ class ListMantenimientos extends StatelessWidget {
                               IconButton(
                                 padding: const EdgeInsets.only(top: 0),
                                 icon: Icon(seleccionarIcono(documentSnapshot['prioridad']),
-                                  size: 47,
-                                  color: Colors.blue,
+                                            size: 47,
+                                            color: Colors.blue,
                                 ),
                                 onPressed: () {
                                     showDialog(
