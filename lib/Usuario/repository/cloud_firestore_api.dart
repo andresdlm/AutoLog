@@ -55,12 +55,28 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  deleteVehiculo(String item){
+  deleteVehiculo(String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');
 
-    documentReference.doc(user.uid).collection('Car').doc(item).delete().whenComplete((){
-      print('$item deleted');
+    documentReference.doc(user.uid).collection('Car').doc(idVehiculo).delete().whenComplete((){
+      print('$idVehiculo deleted');
+    });
+
+    var queryMantenimientos = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos')
+    .where('idVehiculo', isEqualTo: idVehiculo);
+    queryMantenimientos.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+
+    var queryRegistros = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro')
+    .where('idVehiculo', isEqualTo: idVehiculo);
+    queryRegistros.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        doc.reference.delete();
+      });
     });
 
   }
@@ -105,6 +121,7 @@ class CloudFirestoreAPI {
         'fechaRealizado': registro.fechaRealizado,
         'precioServicio': registro.precioServicio,
         'descripcion': registro.descripcion,
+        'idVehiculo': idVehiculo,
       });
     }else{
       documentReference.doc().set({
@@ -113,6 +130,7 @@ class CloudFirestoreAPI {
         'fechaRealizado': registro.fechaRealizado,
         'precioServicio': registro.precioServicio,
         'descripcion': registro.descripcion,
+        'idVehiculo': idVehiculo,
 
       }).whenComplete((){
         print('$registro.tipoMantenimiento created');
