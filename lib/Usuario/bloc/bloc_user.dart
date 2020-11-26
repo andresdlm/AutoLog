@@ -64,6 +64,11 @@ class UserBloc implements Bloc {
   // 10. Registrar mantenimiento realizado
   Future<void> addRegistro(Registro registro, String idVehiculo) => _cloudFirestoreRepository.addRegistro(registro, idVehiculo);
 
+  // 11. Editar vehiculo
+  void updateVehiculo(Vehiculo vehiculo, String idVehiculo) {
+    _cloudFirestoreRepository.updateVehiculo(vehiculo, idVehiculo);
+  }
+
   @override
   void dispose() {
 

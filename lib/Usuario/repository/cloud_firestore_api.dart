@@ -1,6 +1,7 @@
 import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
+import 'package:autolog/Vehiculo/ui/screens/update_vehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -45,7 +46,6 @@ class CloudFirestoreAPI {
       'year': vehiculo.year,
       'color': vehiculo.color,
       'kilometraje': vehiculo.kilometraje,
-      'kilometrajeAnterior': vehiculo.kilometraje,
       'owner': user.uid,
 
     }).whenComplete((){
@@ -53,6 +53,20 @@ class CloudFirestoreAPI {
     });
 
     return null;
+  }
+
+  UpdateVehiculo(Vehiculo vehiculo, String idVehiculo){
+    final User user = FirebaseAuth.instance.currentUser;
+
+    CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
+
+    documentReference.doc(idVehiculo).update({
+      'marca': vehiculo.marca,
+      'modelo': vehiculo.modelo,
+      'year': vehiculo.year,
+      'color': vehiculo.color,
+    }).whenComplete(() => print('$idVehiculo, Actualizado'));
+          
   }
 
   deleteVehiculo(String idVehiculo){

@@ -20,7 +20,6 @@ class ListMantenimientos extends StatelessWidget {
   }
 
   int kilometraje;
-  int kilometrajeAnterior;
   int frecuencia;
   int ultimoServicio;
   List<Map> lista = [];
@@ -30,11 +29,8 @@ class ListMantenimientos extends StatelessWidget {
      Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
       await car.then((DocumentSnapshot carSnapshot) => {
         print('Kilometraje: ${carSnapshot['kilometraje']}'),
-        print('Km Anterior: ${carSnapshot['kilometrajeAnterior']}'),
         kilometraje = carSnapshot['kilometraje'],
-        kilometrajeAnterior = carSnapshot['kilometrajeAnterior'],
         print('ESTE ES EL KILOMETRAJEE: ${kilometraje}'),
-        print('ESTE ES EL KILOMETRAJEE ANTERIOR: ${kilometrajeAnterior}'),
       });
 
       await FirebaseFirestore.instance

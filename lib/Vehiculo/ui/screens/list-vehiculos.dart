@@ -1,6 +1,7 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:autolog/Vehiculo/ui/screens/view-vehiculo.dart';
 import 'package:autolog/Vehiculo/ui/screens/vehiculo_details.dart';
+import 'package:autolog/Vehiculo/ui/screens/update_vehiculo.dart';
 import 'package:autolog/Vehiculo/ui/widgets/buttonAgregarVehiculo.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,7 +31,7 @@ class ListVehiculos extends StatelessWidget {
           builder: (context, snapshots){
             if(snapshots.data == null) 
             return Container( 
-                padding: EdgeInsets.only(top: 250.0),
+                padding: EdgeInsets.only(top: 150.0),
                 child: Center(
                       child: CircularProgressIndicator()
                     ),
@@ -75,7 +76,14 @@ class ListVehiculos extends StatelessWidget {
                                           onPressed: () {
                                             Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => vehiculoDetails(idVehiculo: documentSnapshot.id.toString()))
+                                                MaterialPageRoute(builder: (context) => 
+                                                  UpdateVehiculoScreen(idVehiculo: documentSnapshot.id.toString(),
+                                                                       marca: documentSnapshot['marca'].toString(),
+                                                                       modelo: documentSnapshot['modelo'].toString(),
+                                                                       year: documentSnapshot['year'].toString(),
+                                                                       color: documentSnapshot['color'].toString() 
+                                                  ))
+                                                //MaterialPageRoute(builder: (context) => vehiculoDetails(idVehiculo: documentSnapshot.id.toString()))
                                             );
                                           },
                                       ),
