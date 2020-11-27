@@ -1,7 +1,7 @@
+import 'package:autolog/Usuario/model/usuario.dart';
 import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:autolog/Vehiculo/model/mantenimiento.dart';
-import 'package:autolog/Vehiculo/ui/screens/update_vehiculo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,21 +19,52 @@ class CloudFirestoreAPI {
   Future<void> updateUserData() async {
 
     FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser.uid.toString();
+    String uid =  auth.currentUser.uid.toString();
     String name = auth.currentUser.displayName.toString();
     String mail = auth.currentUser.email.toString();
-    String phoneNumber = auth.currentUser.phoneNumber.toString();
     String photoURL = auth.currentUser.photoURL.toString();
+    String phoneNumber = auth.currentUser.phoneNumber.toString();
 
-    return users.doc(uid).set({
-      'uid': uid,
-      'name':name,
-      'mail': mail,
-      'phoneNumber': phoneNumber,
-      'photoURL': photoURL,
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(uid).get().then((doc) {
+          if (doc.exists){
+            users.doc(uid).update({
+              'uid': uid,
+              'name':name,
+              'mail': mail,
+            }).then((value) => print("User Added"))
+                .catchError((error) => print("Failed to add user: $error"));
+          } else{
+            users.doc(uid).set({
+              'uid': uid,
+              'name':name,
+              'mail': mail,
+              'photoURL': photoURL,
+              'phoneNumber' : phoneNumber,
+              'pais': "",
+            }).then((value) => print("User Added"))
+                .catchError((error) => print("Failed to add user: $error"));
+          }  
+      });
+    } catch (e) {
+      return e.message; 
+    }  
+    
+  }
 
-    }).then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+  Future<void> updateUser(Usuario usuario) async{
+    
+    final User user = FirebaseAuth.instance.currentUser;
+    user.updateProfile(displayName: usuario.name);
+
+    CollectionReference documentReference= FirebaseFirestore.instance.collection('Users');
+    await documentReference.doc(usuario.uid).update({
+      'mail': usuario.email,
+      'name': usuario.name,
+      'phoneNumber': usuario.phoneNumber,
+      'pais': usuario.pais,
+    }).whenComplete(() => print('$usuario.uid, Actualizado'));
+         
   }
 
   Future<void> createVehiculo(Vehiculo vehiculo){
@@ -55,7 +86,7 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  UpdateVehiculo(Vehiculo vehiculo, String idVehiculo){
+  void UpdateVehiculo(Vehiculo vehiculo, String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
 
     CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');

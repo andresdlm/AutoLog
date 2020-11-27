@@ -23,9 +23,9 @@ class _ButtonRed extends State<ButtonRed>{
       onTap: widget.onPressed,
       child: Container(
         margin: EdgeInsets.only(
-            top: 30.0,
-            left: 20.0,
-            right: 20.0
+            top: 0.0,
+            left: 0.0,
+            right: 0.0
         ),
         width: widget.width,
         height: widget.height,
@@ -33,8 +33,8 @@ class _ButtonRed extends State<ButtonRed>{
             borderRadius: BorderRadius.circular(10.0),
             gradient: LinearGradient(
                 colors: [
-                  Color(0xFFa7ff84),//arriba
-                  Color(0xFF1cbb78)//bajo
+                  Colors.deepPurple[300],
+                  Colors.deepPurple[600],
                 ],
                 begin: FractionalOffset(0.2, 0.0),
                 end: FractionalOffset(1.0, 0.6),

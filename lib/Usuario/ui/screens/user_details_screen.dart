@@ -18,7 +18,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
     // TODO: implement build
     UserBloc userBloc = BlocProvider.of(context);
     return Scaffold(
-      body: ButtonRed(text: "Cerrar sesion", onPressed: () => {
+      body: ButtonRed(text: "Cerrar Sesion", onPressed: () => {
         userBloc.singOut()
       }, height: 50.0,),
     );

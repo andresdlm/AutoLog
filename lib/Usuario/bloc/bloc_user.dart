@@ -24,6 +24,8 @@ class UserBloc implements Bloc {
   // Casos de uso
   //1. SignIn por Google
   Future<String> signIn() {
+
+    
     return _auth_repository.signInFirebase();
   }
 
@@ -67,6 +69,11 @@ class UserBloc implements Bloc {
   // 11. Editar vehiculo
   void updateVehiculo(Vehiculo vehiculo, String idVehiculo) {
     _cloudFirestoreRepository.updateVehiculo(vehiculo, idVehiculo);
+  }
+
+  // 12. Updatear Usuario
+  Future <void> updateUser(Usuario usuario){
+    _cloudFirestoreRepository.updateUser(usuario);
   }
 
   @override

@@ -44,21 +44,24 @@ class FirebaseAuthAPI {
   }
 
   Future<void> registerAccount(String email, String password, String name) async {
-    
-    final User user = (await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )).user;
+    try {
+        final User user = (await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        )).user;
 
-    if (user != null) {
-      if (!user.emailVerified) {
-        await user.sendEmailVerification();
-      }
-      await user.updateProfile(displayName: name);
+        if (user != null) {
+          if (!user.emailVerified) {
+            await user.sendEmailVerification();
+          }
+          await user.updateProfile(displayName: name);
 
-    } else {
-      print("Registro fallido");
+        } else {
+          print("Registro fallido");
+        }
+    } catch (e) {
     }
+    
   }
   
 

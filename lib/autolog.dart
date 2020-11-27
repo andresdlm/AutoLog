@@ -1,8 +1,10 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
-import 'package:autolog/Usuario/ui/screens/user_details_screen.dart';
 import 'package:autolog/Vehiculo/ui/screens/list-vehiculos.dart';
 import 'package:flutter/material.dart';
+import 'package:autolog/Usuario/ui/screens/userProfile.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+
+import 'Usuario/ui/screens/userProfile.dart';
 
 class Autolog extends StatefulWidget {
 
@@ -19,10 +21,12 @@ class _Autolog extends State<Autolog> {
   final tabs = [
     Center(child: Text("Hola1")),
     Center(child: ListVehiculos()),
-    Center(child: BlocProvider<UserBloc>(
+    Center(child: ProfilePage(),),
+    
+    /*Center(child: BlocProvider<UserBloc>(
       bloc: UserBloc(),
       child: UserDetailsScreen(),
-    )),
+    )),*/
     Center(child: Text('notification')),
   ];
 
@@ -31,7 +35,8 @@ class _Autolog extends State<Autolog> {
 @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
+     /* appBar: AppBar(
+        backgroundColor: Colors.red,
         title: Text(
           "Autolog",
           style: TextStyle(
@@ -40,7 +45,7 @@ class _Autolog extends State<Autolog> {
             fontWeight: FontWeight.bold
           ),
         ),
-      ),
+      ),*/
 
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

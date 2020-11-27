@@ -51,7 +51,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
             Container(
               margin: EdgeInsets.only(top: 15, bottom: 5),
               width: 350,
-              height: 60,
+              height: 67,
               padding: EdgeInsets.only(left: 10.0),        
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
@@ -105,7 +105,8 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Frecuencia",
+                hintText: "... km",
+                labelText: "Frecuencia km",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerFrecuenciaKM,
@@ -114,7 +115,8 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Ultimo Servicio",
+                hintText: "... km",
+                labelText: "Ultimo Servicio km",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerUltimoServicio,
@@ -123,7 +125,8 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Descripcion",
+                hintText: "...",
+                labelText: "Descripción",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerDescripcion,

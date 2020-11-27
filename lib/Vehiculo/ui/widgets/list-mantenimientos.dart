@@ -17,6 +17,7 @@ class ListMantenimientos extends StatelessWidget {
 
   ListMantenimientos({Key key, this.idVehiculo}): super(key: key){
     user = FirebaseAuth.instance.currentUser;
+    //user.updateEmail(newEmail)
   }
 
   int kilometraje;

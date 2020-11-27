@@ -22,4 +22,6 @@ class CloudFirestoreRepository {
 
   void updateVehiculo(Vehiculo vehiculo, String idVehiculo) => _cloudFirestoreAPI.UpdateVehiculo(vehiculo, idVehiculo); 
 
+  Future<void> updateUser(Usuario usuario) => _cloudFirestoreAPI.updateUser(usuario);
+
 }
