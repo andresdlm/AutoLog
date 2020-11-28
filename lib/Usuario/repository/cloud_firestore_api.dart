@@ -126,19 +126,33 @@ class CloudFirestoreAPI {
 
   }
 
-  Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo){
+  Future<void> addMantenimiento(Mantenimiento mantenimiento, String idVehiculo) async{
     final User user = FirebaseAuth.instance.currentUser;
-    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
-    print(mantenimiento);
-    print(idVehiculo);
+    int kilometraje;
+    String prioridad ="";
+    
+    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+    await car.then((DocumentSnapshot carSnapshot) => {
+        kilometraje = carSnapshot['kilometraje'],
+    });
 
-    documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
+    if(kilometraje-mantenimiento.ultimoServicio >= mantenimiento.frecuenciaMantenimiento){
+          if(kilometraje-mantenimiento.ultimoServicio >= mantenimiento.frecuenciaMantenimiento && kilometraje-mantenimiento.ultimoServicio <= mantenimiento.frecuenciaMantenimiento +1000)
+            prioridad = "BAJA";
+          else if(kilometraje-mantenimiento.ultimoServicio > mantenimiento.frecuenciaMantenimiento + 1000 && kilometraje-mantenimiento.ultimoServicio <= mantenimiento.frecuenciaMantenimiento + 3000)
+            prioridad = "MEDIA";
+          else if(kilometraje-mantenimiento.ultimoServicio > mantenimiento.frecuenciaMantenimiento + 3000)
+            prioridad = "ALTA";   
+      };
+
+    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
+    await documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
       'tipoMantenimiento': mantenimiento.tipoMantenimiento,
       'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
       'ultimoServicio': mantenimiento.ultimoServicio,
       'descripcion': mantenimiento.descripcion,
       'idVehiculo': idVehiculo,
-      'prioridad': '',
+      'prioridad': prioridad,
       'estadoNotificacion': true,
 
     }).whenComplete((){

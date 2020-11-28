@@ -1,8 +1,7 @@
-import 'package:autolog/Usuario/bloc/bloc_user.dart';
+import 'package:autolog/Vehiculo/ui/screens/all_mantenimientos.dart';
 import 'package:autolog/Vehiculo/ui/screens/list-vehiculos.dart';
 import 'package:flutter/material.dart';
 import 'package:autolog/Usuario/ui/screens/userProfile.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 import 'Usuario/ui/screens/userProfile.dart';
 
@@ -27,7 +26,7 @@ class _Autolog extends State<Autolog> {
       bloc: UserBloc(),
       child: UserDetailsScreen(),
     )),*/
-    Center(child: Text('notification')),
+    Center(child: AllMantenimientos()),
   ];
 
   

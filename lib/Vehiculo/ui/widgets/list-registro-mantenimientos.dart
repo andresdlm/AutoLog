@@ -11,6 +11,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
 
   ListRegistroMantenimientos({Key key, this.idVehiculo, this.idMantenimiento}): super(key: key){
     user = FirebaseAuth.instance.currentUser;
+    Stream snapshot = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Registro").snapshots();
   }
 
 
@@ -82,8 +83,8 @@ class ListRegistroMantenimientos extends StatelessWidget {
                             builder:(BuildContext context){
                               return IconButton(
                                 padding: const EdgeInsets.only(top: 15.0),
-                                icon: Icon(Icons.plumbing, size:40.0
-                                ),
+                                icon: Icon(Icons.plumbing, size:40.0),
+                                onPressed: (){},
                               );
                             },
                           ),
@@ -119,7 +120,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
                                   },
                                 ), */
                                 IconButton(
-                                  padding: const EdgeInsets.only(top: 0),
+                                  padding: const EdgeInsets.only(top: 15),
                                   icon: Icon(
                                     Icons.delete,
                                     size: 35,

@@ -53,8 +53,8 @@ class ListMantenimientos extends StatelessWidget {
 
             print(map);
             lista.add(map);
-           for(var n in lista){
-              print(n);
+            for(var n in lista){
+                print(n);
             }
             notificar = true;
           }
@@ -307,19 +307,18 @@ class ListMantenimientos extends StatelessWidget {
           ),
           
       ),
-
-      
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection("Mantenimientos").snapshots(),
         builder: (context, snapshots) {
           if(snapshots.data == null)
-          return Container( 
-                padding: EdgeInsets.only(bottom: 150.0),
-                child: Center(
-                    child: CircularProgressIndicator()
-                ),
-            );
+            return Container( 
+                  padding: EdgeInsets.only(bottom: 150.0),
+                  child: Center(
+                      child: CircularProgressIndicator()
+                  ),
+              );
           switch(snapshots.connectionState){
             case ConnectionState.active:
               return ListView.builder(
@@ -443,7 +442,7 @@ class ListMantenimientos extends StatelessWidget {
                               IconButton(
                                 padding: const EdgeInsets.only(top: 0),
                                 icon: Icon(
-                                  Icons.notifications_off,
+                                  Icons.delete,
                                   size: 35,
                                   color: Colors.red,
                                 ),

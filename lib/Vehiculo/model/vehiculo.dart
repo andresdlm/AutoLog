@@ -18,7 +18,7 @@ class Vehiculo {
     @required this.modelo,
     @required this.year,
     @required this.color,
-    @required this.kilometraje,
+    this.kilometraje,
     this.kilometrajeAnterior
     //@required this.userOwner
   });

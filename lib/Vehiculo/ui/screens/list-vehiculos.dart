@@ -124,7 +124,7 @@ class ListVehiculos extends StatelessWidget {
                 Align(alignment: Alignment.bottomCenter, child: ButtonAgregarVehiculo(),),  
             ],  
           ),
-      ),
+        ),
     );
   }
 }
