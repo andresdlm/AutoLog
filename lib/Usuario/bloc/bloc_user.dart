@@ -76,6 +76,11 @@ class UserBloc implements Bloc {
     _cloudFirestoreRepository.updateUser(usuario);
   }
 
+  // 1e. Updatear Mantenimiento
+  void updateMantenimiento(Mantenimiento mantenimiento, String idVehiculo, String idMantenimiento) {
+    _cloudFirestoreRepository.updateMantenimiento(mantenimiento, idVehiculo, idMantenimiento);
+  }
+
   @override
   void dispose() {
 

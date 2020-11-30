@@ -1,4 +1,3 @@
-import 'package:autolog/Vehiculo/model/vehiculo.dart';
 import 'package:autolog/Vehiculo/ui/widgets/list-mantenimientos.dart';
 import 'package:autolog/Vehiculo/ui/widgets/list-registro-mantenimientos.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,8 +8,8 @@ class ViewVehiculo extends StatelessWidget {
 
   final String idVehiculo; 
   final User user = FirebaseAuth.instance.currentUser;
-  String marca = '';
-  String modelo = '';
+  final String marca;
+  final String modelo;
 
   ViewVehiculo({Key key, this.idVehiculo, this.marca, this.modelo}): super(key: key){
     print(marca);
@@ -24,7 +23,10 @@ class ViewVehiculo extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(marca + " " + modelo),
+          title: Text(marca + " " + modelo, style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.white
+                  )),
           bottom: TabBar(
             indicatorColor: Colors.white,
             labelStyle: TextStyle(fontSize: 22.0),

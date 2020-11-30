@@ -44,7 +44,7 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TitleHeader(title: "Editar Vehiculo"),
+        title: TitleHeader(title: "Editar Vehiculo", fontSize: 20),
         backgroundColor: Colors.blue[200],
         elevation: 0,
         leading: IconButton(
