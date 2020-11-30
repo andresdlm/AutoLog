@@ -45,18 +45,5 @@ class ViewVehiculo extends StatelessWidget {
     ); 
   }
 
-  String funcion(){
-    String marca;
-    CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
-    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
-    car.then((DocumentSnapshot carSnapshot) => {
-      marca = carSnapshot['marca'],
-      print(carSnapshot['marca']),
-      print(carSnapshot['modelo']),
-      print(carSnapshot['color']),
-      print(carSnapshot['year']),
-      print(carSnapshot['km']),
-    });
-    return marca;
-  }
+
 }
