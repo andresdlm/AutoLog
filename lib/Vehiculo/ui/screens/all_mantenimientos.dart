@@ -139,7 +139,7 @@ class AllMantenimientos extends StatefulWidget {
                                             child: new Text('${documentSnapshot['marca']} ${documentSnapshot['modelo']}', 
                                                         style: TextStyle(height: 1.5,
                                                                          fontSize: 27.0,
-                                                                         fontFamily: "Times",
+                                                                         fontFamily: "Lato",
                                                                          color: Colors.teal[800],
                                                                          fontWeight: FontWeight.w700)
                                                       ),
