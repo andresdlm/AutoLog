@@ -16,46 +16,34 @@ class Autolog extends StatefulWidget {
 
 class _Autolog extends State<Autolog> {
 
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final tabs = [
-    Center(child: Text("Hola1")),
+    //Center(child: Text("Home")),
+    Center(child: AllMantenimientos()),
     Center(child: ListVehiculos()),
     Center(child: ProfilePage(),),
-    
-    /*Center(child: BlocProvider<UserBloc>(
-      bloc: UserBloc(),
-      child: UserDetailsScreen(),
-    )),*/
-    Center(child: AllMantenimientos()),
   ];
-
-  
 
 @override
   Widget build(BuildContext context){
     return Scaffold(
-     /* appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text(
-          "Autolog",
-          style: TextStyle(
-            fontFamily: 'Lato',
-            fontSize: 23,
-            fontWeight: FontWeight.bold
-          ),
-        ),
-      ),*/
-
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        iconSize: 25,
-        selectedFontSize: 13,
+        fixedColor: Colors.grey[900],
+        type: BottomNavigationBarType.shifting,
+        iconSize: 30,
+        selectedFontSize: 14,
         items: [
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('HOME'),
             backgroundColor: Colors.blueAccent,
+          ),*/
+          BottomNavigationBarItem(
+            icon: Icon(Icons.alarm),
+            title: Text('NOTIFICATION'),
+            backgroundColor: Colors.teal[400],
           ),
 
           BottomNavigationBarItem(
@@ -70,11 +58,7 @@ class _Autolog extends State<Autolog> {
             backgroundColor: Colors.deepPurpleAccent,
           ),
 
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
-            title: Text('NOTIFICATION'),
-            backgroundColor: Colors.teal[400],
-          ),
+          
         ],
         onTap: (index) {
           setState((){

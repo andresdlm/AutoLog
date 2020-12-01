@@ -1,4 +1,5 @@
 import 'package:autolog/Vehiculo/ui/screens/add_registro.dart';
+import 'package:autolog/Vehiculo/ui/screens/update_registros.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (context) => AddRegistroScreen(idVehiculo: idVehiculo,)));
             },
           child: Icon(Icons.add, size: 40),
-          backgroundColor: Color(0xFF2196F3),
+          backgroundColor: Colors.red[700],
           elevation: 10.0,
           ) 
         ),
@@ -69,9 +70,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
                   itemBuilder: (context, index) {
                     DocumentSnapshot documentSnapshot = snapshots.data.docs[index];
                     return InkWell(
-                      key: Key(documentSnapshot['tipoMantenimiento']),
-                      
-
+                      key: Key(documentSnapshot.id),
                       child: Card(
                           elevation: 10,  
                           margin: EdgeInsets.all(8),
@@ -82,20 +81,23 @@ class ListRegistroMantenimientos extends StatelessWidget {
                             leading: Builder(
                             builder:(BuildContext context){
                               return IconButton(
-                                padding: const EdgeInsets.only(top: 15.0),
+                                padding: const EdgeInsets.only(top: 20.0,),
                                 icon: Icon(Icons.plumbing, size:40.0),
                                 onPressed: (){},
                               );
                             },
                           ),
-                            title:Text(
-                              '${documentSnapshot['fechaRealizado']}\n ${documentSnapshot['tipoMantenimiento']}',
-                              style: TextStyle(
-                                fontSize: 19,
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.w600
+                            title: Container(
+                              margin: EdgeInsets.only(right: 0,),
+                              child: Text('${documentSnapshot['fechaRealizado']}\n${documentSnapshot['tipoMantenimiento']}',
+                                      style: TextStyle(
+                                          fontSize: 19,
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.w600
+                                      ),
+                                     ),
                               ),
-                            ),
+                            
                             subtitle:Text(
                               'Realizado a los: ${documentSnapshot['kilometrajeMantenimiento']} Km\nCosto: ${documentSnapshot['precioServicio']} dolares\nDescripción: ${documentSnapshot['descripcion']}',
                               style: TextStyle(
@@ -108,22 +110,34 @@ class ListRegistroMantenimientos extends StatelessWidget {
                             trailing: Wrap(
                               spacing: -5,
                               children: <Widget>[
-                              /* IconButton(
-                                  padding: const EdgeInsets.only(top: 0),
+                                IconButton(
+                                  padding: const EdgeInsets.only(top: 25, left: 10),
                                   icon: Icon(
                                     Icons.settings,
-                                    size: 35,
+                                    size: 40,
                                     color: Colors.blue,
                                   ),
                                   onPressed: () {
-
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => 
+                                      UpdateRegistrosScreen(
+                                          idRegistro: documentSnapshot.id.toString(),
+                                          idVehiculo: documentSnapshot['idVehiculo'].toString(),
+                                          tipoMantenimiento: documentSnapshot['tipoMantenimiento'].toString(),
+                                          kilometrajeMantenimiento: documentSnapshot['kilometrajeMantenimiento'],
+                                          fechaRealizado: documentSnapshot['fechaRealizado'].toString(),
+                                          precioServicio: documentSnapshot['precioServicio'],
+                                          descripcion: documentSnapshot['descripcion'].toString() 
+                                      ))                //MaterialPageRoute(builder: (context) => vehiculoDetails(idVehiculo: documentSnapshot.id.toString()))
+                                    );
                                   },
-                                ), */
+                                ), 
                                 IconButton(
-                                  padding: const EdgeInsets.only(top: 15),
+                                  padding: const EdgeInsets.only(top: 25, left: 18),
                                   icon: Icon(
                                     Icons.delete,
-                                    size: 35,
+                                    size: 40,
                                     color: Colors.red,
                                   ),
                                   onPressed: (){

@@ -75,7 +75,7 @@ class ListVehiculos extends StatelessWidget {
                                         dense: true,
                                         leading: Icon(Icons.directions_car, size: 40, color: Colors.grey[800]),
                                         title:Text('${documentSnapshot['marca']} ${documentSnapshot['modelo']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),),
-                                        subtitle:Text('Kilometraje: ${documentSnapshot['kilometraje']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
+                                        subtitle:Text('Kilometraje: ${documentSnapshot['kilometraje']}\n  ${documentSnapshot['color']} ${documentSnapshot['year']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
                                         trailing: Wrap(
                                           spacing: -5,
                                           children: <Widget>[

@@ -59,117 +59,128 @@ class _UpdateMantenimientosScreenState extends State<UpdateMantenimientosScreen>
     return Scaffold(
       appBar: AppBar(
         title: TitleHeader(title: "Editar Notificación", fontSize: 20,),
-        backgroundColor: Colors.blue[200],
-        elevation: 0,
+        backgroundColor: Colors.blue[400],
+        elevation: 8,
         leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 45,),
+          padding: EdgeInsets.only(left: 10),
+          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 50,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Container(
+        color: Colors.blue[200],
+        child: ListView(
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 15, bottom: 5),
-              width: 350,
-              height: 67,
-              padding: EdgeInsets.only(left: 10.0),        
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.grey[300],
-                border: Border.all(
-                  color: Color(0xFFe5e5e5),
-                  width: 3.0
-                )
-              ),      
-              child: DropdownButton(
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontFamily: "Lato",
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.bold
-                ),
-                isExpanded: true,
-                value: _value,
-                items: [
-                    DropdownMenuItem(
-                      child: Text("Cambio de Aceite"),
-                      value: 1,
-                    ),
-                    DropdownMenuItem(
-                      child: Text("Frenos"),
-                      value: 2,
-                    ),
-                    DropdownMenuItem(
-                      child: Text("Cauchos"),
-                      value: 3
-                    ),
-                    DropdownMenuItem(
-                        child: Text("Bateria"),
-                        value: 4
+            Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 5),
+                  width: 350,
+                  height: 67,
+                  padding: EdgeInsets.only(left: 10.0),        
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.grey[300],
+                    border: Border.all(
+                      color: Color(0xFFe5e5e5),
+                      width: 3.0
                     )
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _value = value;
-                    switch(_value){
-                        case 1: {tipoMantenimiento = "Cambio de Aceite";} break;
-                        case 2: {tipoMantenimiento = "Frenos";} break;
-                        case 3: {tipoMantenimiento = "Cauchos";} break;
-                        case 4: {tipoMantenimiento = "Bateria";} break;
-                    }
-                    
-                  });
-                },  
-              ),
+                  ),      
+                  child: DropdownButton(
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontFamily: "Lato",
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.bold
+                    ),
+                    isExpanded: true,
+                    value: _value,
+                    items: [
+                        DropdownMenuItem(
+                          child: Text("Cambio de Aceite"),
+                          value: 1,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Frenos"),
+                          value: 2,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Cauchos"),
+                          value: 3
+                        ),
+                        DropdownMenuItem(
+                            child: Text("Bateria"),
+                            value: 4
+                        )
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                        switch(_value){
+                            case 1: {tipoMantenimiento = "Cambio de Aceite";} break;
+                            case 2: {tipoMantenimiento = "Frenos";} break;
+                            case 3: {tipoMantenimiento = "Cauchos";} break;
+                            case 4: {tipoMantenimiento = "Bateria";} break;
+                        }
+                        
+                      });
+                    },  
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextInput(
+                    hintText: "... km",
+                    labelText: "Frecuencia km",
+                    inputType: null,
+                    maxLines: 1,
+                    controller: _controllerfrecuenciaMantenimiento,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextInput(
+                    hintText: "... km",
+                    labelText: "Ultimo Servicio km",
+                    inputType: null,
+                    maxLines: 1,
+                    controller: _controllerultimoServicio,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextInput(
+                    hintText: "...",
+                    labelText: "Descripción",
+                    inputType: null,
+                    maxLines: 1,
+                    controller: _controllerdescripcion,
+                  ),
+                ),
+                
+                Container(
+                  width: 350.0,
+                  child: ButtonBlue(
+                    buttonText: "Guardar Cambios",
+                    colores: [
+                              Colors.blue[600],
+                              Colors.indigo[400],
+                          ],
+                    onPressed: () {
+                      userBloc.updateMantenimiento(Mantenimiento(tipoMantenimiento: _controllertipoMantenimiento,
+                                                                frecuenciaMantenimiento: int.parse(_controllerfrecuenciaMantenimiento.text),
+                                                                ultimoServicio: int.parse(_controllerultimoServicio.text),
+                                                                descripcion: _controllerdescripcion.text,),
+                                                                idVehiculo,
+                                                                idMantenimiento);
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "... km",
-                labelText: "Frecuencia km",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerfrecuenciaMantenimiento,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "... km",
-                labelText: "Ultimo Servicio km",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerultimoServicio,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "...",
-                labelText: "Descripción",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerdescripcion,
-              ),
-            ),
-            
-            Container(
-              width: 350.0,
-              child: ButtonBlue(
-                buttonText: "Guardar Cambios",
-                onPressed: () {
-                  userBloc.updateMantenimiento(Mantenimiento(tipoMantenimiento: _controllertipoMantenimiento,
-                                                             frecuenciaMantenimiento: int.parse(_controllerfrecuenciaMantenimiento.text),
-                                                             ultimoServicio: int.parse(_controllerultimoServicio.text),
-                                                             descripcion: _controllerdescripcion.text,),
-                                                             idVehiculo,
-                                                             idMantenimiento);
-                  Navigator.pop(context);
-                },
-              ),
-            )
-          ],
+
+          ]
         ),
       )
     );

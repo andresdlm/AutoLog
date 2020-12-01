@@ -12,8 +12,8 @@ class ViewVehiculo extends StatelessWidget {
   final String modelo;
 
   ViewVehiculo({Key key, this.idVehiculo, this.marca, this.modelo}): super(key: key){
-    print(marca);
-    print(modelo);
+    /*print(marca);
+    print(modelo);*/
   }
   
   @override
@@ -24,9 +24,12 @@ class ViewVehiculo extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(marca + " " + modelo, style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 26,
                     color: Colors.white
                   )),
+          backgroundColor: Colors.red[700],
+          elevation: 8,
+
           bottom: TabBar(
             indicatorColor: Colors.white,
             labelStyle: TextStyle(fontSize: 22.0),

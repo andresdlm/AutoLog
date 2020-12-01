@@ -38,54 +38,24 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
 
     return Scaffold(
       appBar: AppBar(
-        title: TitleHeader(title: "Registrar servicio"),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        title: TitleHeader(title: "Registrar Servicio", fontSize: 20,),
+        backgroundColor: Colors.red[400],
+        elevation: 8,
         leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 45,),
+          padding: EdgeInsets.only(left: 10),
+          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 50,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Container(
+        color: Colors.red[200],
+        child: ListView(
           children: <Widget>[
-            /*Container(
-              margin: EdgeInsets.only(top: 15, bottom: 5),
-
-              // Dropdown de tipo de mantenimiento
-              child: DropdownButton(
-                
-                value: _value,
-                items: [
-                    DropdownMenuItem(
-                      child: Text("First Item"),
-                      value: 1,
-                    ),
-                    DropdownMenuItem(
-                      child: Text("Second Item"),
-                      value: 2,
-                    ),
-                    DropdownMenuItem(
-                      child: Text("Third Item"),
-                      value: 3
-                    ),
-                    DropdownMenuItem(
-                        child: Text("Fourth Item"),
-                        value: 4
-                    )
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _value = value;
-                  });
-                }
-              ),
-            ),*/
-
             Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
+              margin: EdgeInsets.only(top: 20, bottom: 5),
               child: TextInput(
-                hintText: "Tipo de mantenimiento",
+                labelText: "Tipo de mantenimiento",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerTipoMantenimiento,
@@ -94,7 +64,8 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Kilometraje del servicio",
+                labelText: "Kilometraje del servicio",
+                hintText: "... km",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerKilometrajeMantenimiento,
@@ -103,7 +74,8 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Fecha",
+                labelText: "Fecha",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerfechaRealizado,
@@ -112,7 +84,8 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Costo",
+                labelText: "Costo",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerPrecioServicio,
@@ -121,7 +94,8 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Descripcion",
+                labelText: "Descripcion",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerdescripcion,
@@ -131,6 +105,10 @@ class _AddRegistroScreen extends State<AddRegistroScreen>{
               width: 350.0,
               child: ButtonBlue(
                 buttonText: "Agregar Registro",
+                colores: [
+                          Colors.red[600],
+                          Colors.pink[800],
+                      ],
                 onPressed: () {
                   userBloc.addRegistro(
                     Registro(

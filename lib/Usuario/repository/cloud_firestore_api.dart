@@ -131,6 +131,19 @@ class CloudFirestoreAPI {
           
   }
 
+  void updateRegistro(Registro registro, String idVehiculo, String idRegistro) async {
+      final User user = FirebaseAuth.instance.currentUser;
+
+      CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro');
+      await documentReference.doc(idRegistro).update({
+        'tipoMantenimiento': registro.tipoMantenimiento,
+        'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
+        'precioServicio': registro.precioServicio,
+        'descripcion': registro.descripcion,
+        'fechaRealizado': registro.fechaRealizado, 
+      }).whenComplete(() => print('$idRegistro, Actualizado'));
+  }
+
   deleteVehiculo(String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users');

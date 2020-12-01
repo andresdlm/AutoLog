@@ -26,4 +26,6 @@ class CloudFirestoreRepository {
 
   void updateMantenimiento(Mantenimiento mantenimiento, String idVehiculo, String idMantenimiento) => _cloudFirestoreAPI.updateMantenimiento(mantenimiento, idVehiculo, idMantenimiento); 
 
+  void updateRegistro(Registro registro, String idVehiculo, String idRegistro) => _cloudFirestoreAPI.updateRegistro(registro, idVehiculo, idRegistro); 
+
 }

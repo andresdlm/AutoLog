@@ -190,6 +190,7 @@ class ListMantenimientos extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton(
+                      backgroundColor: Colors.red[700],
                       child: Icon(
                           Icons.edit_road,
                           size: 40
@@ -292,10 +293,11 @@ class ListMantenimientos extends StatelessWidget {
                         height: 100,
                         width: 10,
                   ),
-                  FloatingActionButton(           
+                  FloatingActionButton(  
+                        backgroundColor: Colors.red[700],         
                         child: Icon(
                             Icons.add_alert,
-                            size: 30
+                            size: 30,
                         ),
                         onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AddMantenimientoScreen(idVehiculo: idVehiculo,)));
@@ -346,8 +348,7 @@ class ListMantenimientos extends StatelessWidget {
                               );
                             },
                           ),      
-                          title:Text(
-                            documentSnapshot['tipoMantenimiento'],
+                          title:Text(documentSnapshot['tipoMantenimiento'],
                             style: TextStyle(
                               fontSize: 18,
                               fontFamily: 'Lato',
@@ -355,7 +356,7 @@ class ListMantenimientos extends StatelessWidget {
                             ),
                           ),
                           subtitle:Text(
-                            'Se realiza cada: ${documentSnapshot['frecuenciaMantenimiento']} Km\nUltimo servicio: ${documentSnapshot['ultimoServicio']} Km',
+                            'Se realiza cada: ${documentSnapshot['frecuenciaMantenimiento']} Km\nUltimo servicio: ${documentSnapshot['ultimoServicio']} Km\nDescripción: ${documentSnapshot['descripcion']}',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Lato',
@@ -383,9 +384,8 @@ class ListMantenimientos extends StatelessWidget {
                                         frecuenciaMantenimiento: documentSnapshot['frecuenciaMantenimiento'],
                                         ultimoServicio: documentSnapshot['ultimoServicio'],
                                         descripcion: documentSnapshot['descripcion'].toString() 
-                                                        ))
-                                                      //MaterialPageRoute(builder: (context) => vehiculoDetails(idVehiculo: documentSnapshot.id.toString()))
-                                                  );
+                                    ))
+                                  );
                                 },
                               ),
 

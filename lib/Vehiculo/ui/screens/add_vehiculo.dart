@@ -29,82 +29,91 @@ class _AddVehiculoScreen extends State<AddVehiculoScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TitleHeader(title: "Agregar Vehiculo"),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        title: TitleHeader(title: "Agregar Vehiculo", fontSize: 20,),
+        backgroundColor: Colors.red[400],
+        elevation: 8,
         leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 45,),
+          padding: EdgeInsets.only(left: 10),
+          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 50,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 15, bottom: 5),
-              child: TextInput(
-                hintText: "Marca",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerMarca,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "Modelo",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerModelo,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "Año",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerYear,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "Color",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerColor,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              child: TextInput(
-                hintText: "Kilometraje",
-                inputType: null,
-                maxLines: 1,
-                controller: _controllerKilometraje,
-              ),
-            ),
-            Container(
-              width: 350.0,
-              child: ButtonBlue(
-                buttonText: "Agregar Vehiculo",
-                onPressed: () {
-                  
-                  userBloc.createVehiculo(Vehiculo(
-                    marca: _controllerMarca.text,
-                    modelo: _controllerModelo.text,
-                    year: int.parse(_controllerYear.text),
-                    color: _controllerColor.text,
-                    kilometraje: int.parse(_controllerKilometraje.text),
-                  ));
-                  Navigator.pop(context);
-                },
-              ),
-            )
-          ],
-        ),
-      )
+      body: Container(
+        color: Colors.red[200],
+        child:  new ListView(
+            children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 20, bottom: 5),
+                    child: TextInput(
+                      labelText: "Marca",
+                      hintText: "...",
+                      inputType: null,
+                      maxLines: 1,
+                      controller: _controllerMarca,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: TextInput(
+                      labelText: "Modelo",
+                      hintText: "...",
+                      inputType: null,
+                      maxLines: 1,
+                      controller: _controllerModelo,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: TextInput(
+                      labelText: "Año",
+                      hintText: "...",
+                      inputType: null,
+                      maxLines: 1,
+                      controller: _controllerYear,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: TextInput(
+                      labelText: "Color",
+                      hintText: "...",
+                      inputType: null,
+                      maxLines: 1,
+                      controller: _controllerColor,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: TextInput(
+                      labelText: "Kilometraje",
+                      hintText: "... km",
+                      inputType: null,
+                      maxLines: 1,
+                      controller: _controllerKilometraje,
+                    ),
+                  ),
+                  Container(
+                    child: ButtonBlue(
+                      buttonText: "Agregar Vehiculo",
+                      colores: [
+                          Colors.red[600],
+                          Colors.pink[800],
+                      ],
+                      onPressed: () {
+                        userBloc.createVehiculo(Vehiculo(
+                          marca: _controllerMarca.text,
+                          modelo: _controllerModelo.text,
+                          year: int.parse(_controllerYear.text),
+                          color: _controllerColor.text,
+                          kilometraje: int.parse(_controllerKilometraje.text),
+                        ));
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+            ],
+        )
+      ) 
     );
   }
 }

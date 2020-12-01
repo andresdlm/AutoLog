@@ -44,21 +44,24 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TitleHeader(title: "Editar Vehiculo", fontSize: 20),
-        backgroundColor: Colors.blue[200],
-        elevation: 0,
+        title: TitleHeader(title: "Editar Vehiculo", fontSize: 20,),
+        backgroundColor: Colors.blue[400],
+        elevation: 8,
         leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 45,),
+          padding: EdgeInsets.only(left: 10),
+          icon: Icon(Icons.keyboard_arrow_left, color: Colors.black, size: 50,),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Container(
+        color: Colors.blue[200],
+        child: ListView(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 15, bottom: 5),
+              margin: EdgeInsets.only(top: 20, bottom: 5),
               child: TextInput(
-                hintText: "Marca",
+                labelText: "Marca",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerMarca,
@@ -67,7 +70,8 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Modelo",
+                labelText: "Modelo",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerModelo,
@@ -76,7 +80,8 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Año",
+                labelText: "Año",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerYear,
@@ -85,7 +90,8 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
-                hintText: "Color",
+                labelText: "Color",
+                hintText: "...",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerColor,
@@ -96,8 +102,11 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
               width: 350.0,
               child: ButtonBlue(
                 buttonText: "Guardar Cambios",
+                colores: [
+                          Colors.blue[600],
+                          Colors.indigo[400],
+                      ],
                 onPressed: () {
-                  
                   userBloc.updateVehiculo(Vehiculo( marca: _controllerMarca.text,
                                                    modelo: _controllerModelo.text,
                                                    year: int.parse(_controllerYear.text),
