@@ -1,6 +1,7 @@
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:autolog/Vehiculo/model/registro.dart';
 import 'package:autolog/Vehiculo/ui/screens/add_mantenimiento.dart';
+import 'package:autolog/Vehiculo/ui/screens/update_mantenimientos.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -189,6 +190,7 @@ class ListMantenimientos extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton(
+                      backgroundColor: Colors.red[700],
                       child: Icon(
                           Icons.edit_road,
                           size: 40
@@ -275,7 +277,7 @@ class ListMantenimientos extends StatelessWidget {
                                                         lista.clear();
                                                         Navigator.of(context).pop();
                                                       },
-                                                      child:Text('OK', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0)))
+                                                      child:Text('OK', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0))),
                                               ],
                                             );
                                           },
@@ -291,10 +293,11 @@ class ListMantenimientos extends StatelessWidget {
                         height: 100,
                         width: 10,
                   ),
-                  FloatingActionButton(           
+                  FloatingActionButton(  
+                        backgroundColor: Colors.red[700],         
                         child: Icon(
                             Icons.add_alert,
-                            size: 30
+                            size: 30,
                         ),
                         onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AddMantenimientoScreen(idVehiculo: idVehiculo,)));
@@ -345,8 +348,7 @@ class ListMantenimientos extends StatelessWidget {
                               );
                             },
                           ),      
-                          title:Text(
-                            documentSnapshot['tipoMantenimiento'],
+                          title:Text(documentSnapshot['tipoMantenimiento'],
                             style: TextStyle(
                               fontSize: 18,
                               fontFamily: 'Lato',
@@ -354,7 +356,7 @@ class ListMantenimientos extends StatelessWidget {
                             ),
                           ),
                           subtitle:Text(
-                            'Se realiza cada: ${documentSnapshot['frecuenciaMantenimiento']} Km\nUltimo servicio: ${documentSnapshot['ultimoServicio']} Km',
+                            'Se realiza cada: ${documentSnapshot['frecuenciaMantenimiento']} Km\nUltimo servicio: ${documentSnapshot['ultimoServicio']} Km\nDescripción: ${documentSnapshot['descripcion']}',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Lato',
@@ -367,12 +369,23 @@ class ListMantenimientos extends StatelessWidget {
                             children: <Widget>[
                               IconButton(
                                 padding: const EdgeInsets.only(top: 0),
-                                icon: Icon(seleccionarIcono(documentSnapshot['prioridad']),
-                                            size: 47,
+                                icon: Icon(Icons.settings,
+                                            size: 39,
                                             color: Colors.blue,
                                 ),
                                 onPressed: () {
-                                    //aquiiiiii
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => 
+                                    UpdateMantenimientosScreen(
+                                        idMantenimiento: documentSnapshot.id.toString(),
+                                        idVehiculo: documentSnapshot['idVehiculo'].toString(),
+                                        tipoMantenimiento: documentSnapshot['tipoMantenimiento'].toString(),
+                                        frecuenciaMantenimiento: documentSnapshot['frecuenciaMantenimiento'],
+                                        ultimoServicio: documentSnapshot['ultimoServicio'],
+                                        descripcion: documentSnapshot['descripcion'].toString() 
+                                    ))
+                                  );
                                 },
                               ),
 
@@ -426,6 +439,14 @@ class ListMantenimientos extends StatelessWidget {
                                     ),
                                     actions: <Widget>[
                                       FlatButton(
+                                        padding: EdgeInsets.only(left: 20.0),
+                                        onPressed:(){
+                                          Navigator.of(context).pop();
+                                        },
+                                        child:Text('cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.red))
+                                      ),
+
+                                      FlatButton(
                                           onPressed:(){
                                             if(controllerPrecio != null){
                                                 userBloc.addRegistro(
@@ -446,7 +467,8 @@ class ListMantenimientos extends StatelessWidget {
                                                   Navigator.pop(context);     
                                             }
                                           },
-                                          child:Text('add', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)))
+                                          child:Text('add', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
+                                      ),
                                     ],
                               ); 
                             },

@@ -18,11 +18,21 @@ class ButtonAgregarVehiculo extends StatelessWidget {
           left: 20.0,
           right: 20.0
         ),
-        height: 50.0,
-        width: 130.0,
+        height: 55.0,
+        width: 170.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: Colors.red[400],
+          gradient: LinearGradient(
+              colors: [
+                Colors.red[600],
+                Colors.pink[800],
+              ],
+              begin: FractionalOffset(0.2, 0.0),
+              end: FractionalOffset(1.0, 1.9),
+              stops: [0.0, 0.8],
+              tileMode: TileMode.clamp
+
+            )
         ),
         child: Center(
           child: Text(

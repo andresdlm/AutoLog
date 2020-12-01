@@ -59,23 +59,6 @@ class AllMantenimientos extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold( 
-      /*floatingActionButton: Container(
-        height: 100.0,
-        width: 100.0,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => AddRegistroScreen(idVehiculo: idVehiculo,)));
-            },
-          child: Icon(Icons.add, size: 40),
-          backgroundColor: Color(0xFF2196F3),
-          elevation: 10.0,
-          ) 
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,*/
-
       appBar: AppBar(
         backgroundColor: Colors.teal[400],
         title: Text(

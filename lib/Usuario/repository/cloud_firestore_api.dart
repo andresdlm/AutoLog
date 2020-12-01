@@ -86,7 +86,7 @@ class CloudFirestoreAPI {
     return null;
   }
 
-  void UpdateVehiculo(Vehiculo vehiculo, String idVehiculo){
+  void updateVehiculo(Vehiculo vehiculo, String idVehiculo){
     final User user = FirebaseAuth.instance.currentUser;
 
     CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
@@ -98,6 +98,50 @@ class CloudFirestoreAPI {
       'color': vehiculo.color,
     }).whenComplete(() => print('$idVehiculo, Actualizado'));
           
+  }
+
+   void updateMantenimiento(Mantenimiento mantenimiento, String idVehiculo, String idMantenimiento) async {
+
+    final User user = FirebaseAuth.instance.currentUser;
+    int kilometraje;
+    String prioridad ="";
+    
+    Future<DocumentSnapshot> car = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).get();
+    await car.then((DocumentSnapshot carSnapshot) => {
+        kilometraje = carSnapshot['kilometraje'],
+    });
+
+    if(kilometraje-mantenimiento.ultimoServicio >= mantenimiento.frecuenciaMantenimiento){
+          if(kilometraje-mantenimiento.ultimoServicio >= mantenimiento.frecuenciaMantenimiento && kilometraje-mantenimiento.ultimoServicio <= mantenimiento.frecuenciaMantenimiento +1000)
+            prioridad = "BAJA";
+          else if(kilometraje-mantenimiento.ultimoServicio > mantenimiento.frecuenciaMantenimiento + 1000 && kilometraje-mantenimiento.ultimoServicio <= mantenimiento.frecuenciaMantenimiento + 3000)
+            prioridad = "MEDIA";
+          else if(kilometraje-mantenimiento.ultimoServicio > mantenimiento.frecuenciaMantenimiento + 3000)
+            prioridad = "ALTA";   
+    };
+
+    CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Mantenimientos');
+    await documentReference.doc(idMantenimiento).update({
+      'tipoMantenimiento': mantenimiento.tipoMantenimiento,
+      'frecuenciaMantenimiento': mantenimiento.frecuenciaMantenimiento,
+      'ultimoServicio': mantenimiento.ultimoServicio,
+      'descripcion': mantenimiento.descripcion,
+      'prioridad': prioridad, 
+    }).whenComplete(() => print('$idMantenimiento, Actualizado'));
+          
+  }
+
+  void updateRegistro(Registro registro, String idVehiculo, String idRegistro) async {
+      final User user = FirebaseAuth.instance.currentUser;
+
+      CollectionReference documentReference= FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car').doc(idVehiculo).collection('Registro');
+      await documentReference.doc(idRegistro).update({
+        'tipoMantenimiento': registro.tipoMantenimiento,
+        'kilometrajeMantenimiento': registro.kilometrajeMantenimiento,
+        'precioServicio': registro.precioServicio,
+        'descripcion': registro.descripcion,
+        'fechaRealizado': registro.fechaRealizado, 
+      }).whenComplete(() => print('$idRegistro, Actualizado'));
   }
 
   deleteVehiculo(String idVehiculo){
@@ -143,7 +187,7 @@ class CloudFirestoreAPI {
             prioridad = "MEDIA";
           else if(kilometraje-mantenimiento.ultimoServicio > mantenimiento.frecuenciaMantenimiento + 3000)
             prioridad = "ALTA";   
-      };
+    };
 
     CollectionReference documentReference = FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('Car');
     await documentReference.doc(idVehiculo).collection('Mantenimientos').doc().set({
