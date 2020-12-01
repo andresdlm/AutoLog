@@ -141,7 +141,43 @@ class ListRegistroMantenimientos extends StatelessWidget {
                                     color: Colors.red,
                                   ),
                                   onPressed: (){
-                                    deleteRegistro(documentSnapshot.id);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context){
+                                        return  AlertDialog(
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                              contentPadding: EdgeInsets.all(5.0), //padding de la cajita
+                                              title: Center(
+                                                child: Text('¡Eliminar Registro!'),
+                                              ),
+                                              elevation: 5.0,
+                                              backgroundColor: Colors.red[100],
+                                              content: Container(
+                                                child: Center(
+                                                  heightFactor: 1.6,
+                                                  child: Text('¿Seguro que desea eliminarlo?'),
+                                                ),
+                                              ),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                    onPressed:(){
+                                                      deleteRegistro(documentSnapshot.id);
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child:Text('Si', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
+                                                ),
+
+                                                FlatButton(
+                                                  padding: EdgeInsets.only(left: 1.0, right: 10.0),
+                                                  onPressed:(){
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child:Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.red))
+                                                ),
+                                              ],
+                                        ); 
+                                      },
+                                    );
                                   }
                                 ),
                               ],
