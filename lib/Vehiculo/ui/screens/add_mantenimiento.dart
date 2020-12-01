@@ -140,7 +140,7 @@ class _AddMantenimientoScreen extends State<AddMantenimientoScreen>{
                 Container(
                   width: 350.0,
                   child: ButtonBlue(
-                    buttonText: "Agregar Mantenimiento",
+                    buttonText: "Agregar Notificación",
                     colores: [
                               Colors.red[600],
                               Colors.pink[800],

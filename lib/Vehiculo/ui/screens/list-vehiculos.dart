@@ -75,7 +75,7 @@ class ListVehiculos extends StatelessWidget {
                                         dense: true,
                                         leading: Icon(Icons.directions_car, size: 40, color: Colors.grey[800]),
                                         title:Text('${documentSnapshot['marca']} ${documentSnapshot['modelo']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),),
-                                        subtitle:Text('Kilometraje: ${documentSnapshot['kilometraje']}\n  ${documentSnapshot['color']} ${documentSnapshot['year']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
+                                        subtitle:Text('Kilometraje: ${documentSnapshot['kilometraje']}\n${documentSnapshot['color']} ${documentSnapshot['year']}',style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),),
                                         trailing: Wrap(
                                           spacing: -5,
                                           children: <Widget>[
@@ -103,13 +103,49 @@ class ListVehiculos extends StatelessWidget {
                                             IconButton(
                                                 padding: const EdgeInsets.only(top: 0),
                                                 icon: Icon(
-                                                Icons.delete,
-                                                size: 38,
-                                                color: Colors.red,
-                                                ),
+                                                  Icons.delete,
+                                                  size: 38,
+                                                  color: Colors.red,
+                                                  ),
                                                 onPressed: (){
-                                                userBloc.deleteVehiculo(documentSnapshot.id);
-                                                }
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context){
+                                                      return  AlertDialog(
+                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                                            contentPadding: EdgeInsets.all(5.0), //padding de la cajita
+                                                            title: Center(
+                                                              child: Text('¡Eliminar Vehiculo!'),
+                                                            ),
+                                                            elevation: 5.0,
+                                                            backgroundColor: Colors.red[100],
+                                                            content: Container(
+                                                              child: Center(
+                                                                heightFactor: 1.6,
+                                                                child: Text('¿Seguro que desea eliminarlo?'),
+                                                              ),
+                                                            ),
+                                                            actions: <Widget>[
+                                                              FlatButton(
+                                                                  onPressed:(){
+                                                                    userBloc.deleteVehiculo(documentSnapshot.id);
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                  child:Text('Si', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0)),
+                                                              ),
+
+                                                              FlatButton(
+                                                                padding: EdgeInsets.only(left: 1.0, right: 10.0),
+                                                                onPressed:(){
+                                                                  Navigator.of(context).pop();
+                                                                },
+                                                                child:Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.red))
+                                                              ),
+                                                            ],
+                                                      ); 
+                                                    },
+                                                  );
+                                                },
                                             ),
                                           ],
                                         ),
