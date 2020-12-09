@@ -36,6 +36,7 @@ dependencies:
   firebase_storage: ^4.0.1
   provider: ^4.3.2+2
   firebase_messaging: ^5.0.2
+  hexcolor: ^1.0.6
 
 
 dev_dependencies:

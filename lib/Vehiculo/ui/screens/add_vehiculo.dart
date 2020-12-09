@@ -5,6 +5,7 @@ import 'package:autolog/widgets/text_input.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class AddVehiculoScreen extends StatefulWidget {
   @override
@@ -16,21 +17,32 @@ class AddVehiculoScreen extends StatefulWidget {
 
 class _AddVehiculoScreen extends State<AddVehiculoScreen> {
   @override
+
+  bool isNumeric(String s) {
+  if (s == null) {
+    return true;
+  }
+  return int.tryParse(s) != null;
+  }
+
+  final globalKey = GlobalKey<ScaffoldState>();
+
   Widget build(BuildContext context) {
     // TODO: implement build
 
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
 
-    final _controllerMarca = TextEditingController();
-    final _controllerModelo = TextEditingController();
+    final _controllerMarca = TextEditingController()..text = "";
+    final _controllerModelo = TextEditingController()..text = "";
     final _controllerYear = TextEditingController();
-    final _controllerColor = TextEditingController();
+    final _controllerColor = TextEditingController()..text = "";
     final _controllerKilometraje = TextEditingController();
 
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
-        title: TitleHeader(title: "Agregar Vehiculo", fontSize: 20,),
-        backgroundColor: Colors.red[400],
+        title: TitleHeader(title: "Agregar Vehiculo", fontSize: 20),
+        backgroundColor: HexColor('#367EC2'),
         elevation: 8,
         leading: IconButton(
           padding: EdgeInsets.only(left: 10),
@@ -39,7 +51,7 @@ class _AddVehiculoScreen extends State<AddVehiculoScreen> {
         ),
       ),
       body: Container(
-        color: Colors.red[200],
+        color: HexColor('#0A4A85'), //1D2B47 
         child:  new ListView(
             children: <Widget>[
                   Container(
@@ -100,14 +112,38 @@ class _AddVehiculoScreen extends State<AddVehiculoScreen> {
                           Colors.pink[800],
                       ],
                       onPressed: () {
-                        userBloc.createVehiculo(Vehiculo(
-                          marca: _controllerMarca.text,
-                          modelo: _controllerModelo.text,
-                          year: int.parse(_controllerYear.text),
-                          color: _controllerColor.text,
-                          kilometraje: int.parse(_controllerKilometraje.text),
-                        ));
-                        Navigator.pop(context);
+                        if(_controllerMarca.text == "" || isNumeric(_controllerMarca.text) == true){
+                            final snackBar = SnackBar(content: Text('Error! Ingrese la "Marca" del carro'));
+                            globalKey.currentState.showSnackBar(snackBar);
+                        }
+                        else if(_controllerModelo.text == "" || isNumeric(_controllerModelo.text) == true){
+                            final snackBar = SnackBar(content: Text('Error! Ingrese el "Modelo" del carro'));
+                            globalKey.currentState.showSnackBar(snackBar);
+                        }
+                        else if (isNumeric(_controllerYear.text) == false) {
+                            final snackBar = SnackBar(content: Text('Error! El "Año" debe ser un número entero'));
+                            //final snackBar = SnackBar(content: Text('Profile saved'), action: SnackBarAction(label: 'Undo', onPressed: (){},),
+                            globalKey.currentState.showSnackBar(snackBar);
+                        }
+                        else if(_controllerColor.text == "" || isNumeric(_controllerColor.text) == true){
+                            final snackBar = SnackBar(content: Text('Error! Ingrese un "Color"'));
+                            globalKey.currentState.showSnackBar(snackBar);
+                        }
+                        else if(isNumeric(_controllerKilometraje.text) == false){
+                            final snackBar = SnackBar(content: Text('Error! El "Kilometraje" debe ser un número entero'));
+                            globalKey.currentState.showSnackBar(snackBar);
+                        }
+                        else{
+                          userBloc.createVehiculo(Vehiculo(
+                            marca: _controllerMarca.text,
+                            modelo: _controllerModelo.text,
+                            year: int.parse(_controllerYear.text),
+                            color: _controllerColor.text,
+                            kilometraje: int.parse(_controllerKilometraje.text),
+                          ));
+                          Navigator.pop(context);
+                        }
+                      
                       },
                     ),
                   ),

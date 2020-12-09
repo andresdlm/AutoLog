@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -45,7 +46,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     datosUsuario();
     return new Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: HexColor('#174D80'),
         title: Text(
           "AutoLog",
           style: TextStyle(
@@ -56,14 +57,14 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
         ),
       ),
       body: new Container(
-      color: Colors.white,
+      color: HexColor('#528AB3'),
       child: new ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
               new Container(
                 height: 230.0,
-                color: Colors.deepPurple[100],
+                color: HexColor('#528AB3'),
                 child: new Column(
                   children: <Widget>[
                     Padding(
@@ -119,14 +120,14 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                             child: new Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                new CircleAvatar(
+                                /*new CircleAvatar(
                                   backgroundColor: Colors.pink[500],
                                   radius: 25.0,
                                   child: new Icon(
                                     Icons.camera_alt,
                                     color: Colors.white,
                                   ),
-                                )
+                                )*/
                               ],
                             ),
                           ),
@@ -136,7 +137,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                 ),
               ),
               new Container(
-                color: Colors.deepPurple[100],
+                color: HexColor('#528AB3'),
                 child: Align(alignment: Alignment.bottomCenter, //BOTON CERRAR
                             child: ButtonRed(text: "Cerrar Sesión", width: 200, height: 50, onPressed: () => {
                               userBloc.singOut()
@@ -146,7 +147,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
               ),
               
               new Container(
-                color: Colors.deepPurple[100], //color de la lista
+                color: HexColor('#528AB3'),//color de la lista
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 100.0),
                   child: new Column(
@@ -438,7 +439,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   Widget _getEditIcon() {
     return new GestureDetector(
       child: new CircleAvatar(
-        backgroundColor: Colors.pink[500],
+        backgroundColor: Colors.red[900],
         radius: 19,
         child: new Icon(
           Icons.edit,

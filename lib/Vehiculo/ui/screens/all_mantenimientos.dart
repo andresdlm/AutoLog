@@ -2,6 +2,7 @@ import 'package:autolog/widgets/title_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 
 class AllMantenimientos extends StatefulWidget {
@@ -60,7 +61,7 @@ class AllMantenimientos extends StatefulWidget {
   Widget build(BuildContext context) {
     return Scaffold( 
       appBar: AppBar(
-        backgroundColor: Colors.teal[400],
+        backgroundColor: HexColor('#174D80'),
         title: Text(
           "AutoLog",
           style: TextStyle(
@@ -72,12 +73,12 @@ class AllMantenimientos extends StatefulWidget {
       ),
     
       body: Container(
-        color: Colors.teal[50],
+        color: HexColor('#528AB3'),
         child: 
         ListView(
           children: <Widget>[
             Container(
-              color: Colors.teal[50],
+              color: HexColor('#528AB3'),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -127,12 +128,12 @@ class AllMantenimientos extends StatefulWidget {
                                                             style: TextStyle(height: 1.5,
                                                                             fontSize: 27.0,
                                                                             fontFamily: "Times",
-                                                                            color: Colors.teal[800],
+                                                                            color: HexColor('#0A1D36'),
                                                                             fontWeight: FontWeight.w700)
                                                           ),
                                               ),
                                             ),
-                                            color: Colors.teal[50],
+                                            color: HexColor('#528AB3'),
                                           ), 
 
                                                 ListView.builder(

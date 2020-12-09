@@ -3,6 +3,7 @@ import 'package:autolog/Vehiculo/ui/screens/update_registros.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ListRegistroMantenimientos extends StatelessWidget {
 
@@ -44,7 +45,7 @@ class ListRegistroMantenimientos extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (context) => AddRegistroScreen(idVehiculo: idVehiculo,)));
             },
           child: Icon(Icons.add, size: 40),
-          backgroundColor: Colors.red[700],
+          backgroundColor: HexColor('#174D80'),    
           elevation: 10.0,
           ) 
         ),

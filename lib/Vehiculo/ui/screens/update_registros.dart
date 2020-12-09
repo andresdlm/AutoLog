@@ -5,6 +5,7 @@ import 'package:autolog/widgets/text_input.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class UpdateRegistrosScreen extends StatefulWidget {
   
@@ -34,6 +35,15 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
 
   _UpdateRegistrosScreenState({Key key, this.idRegistro, this.idVehiculo, this.tipoMantenimiento, this.kilometrajeMantenimiento, this.fechaRealizado, this.precioServicio, this.descripcion});  //constructor
 
+    bool isNumeric(String s) {
+    if (s == null) {
+      return true;
+    }
+    return int.tryParse(s) != null;
+  }
+
+  final globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     UserBloc userBloc = BlocProvider.of<UserBloc>(context);
@@ -46,9 +56,10 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
 
 
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: TitleHeader(title: "Editar Registro", fontSize: 20,),
-        backgroundColor: Colors.blue[400],
+        backgroundColor: HexColor('#367EC2'),
         elevation: 8,
         leading: IconButton(
           padding: EdgeInsets.only(left: 10),
@@ -57,7 +68,7 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
         ),
       ),
       body: Container(
-        color: Colors.blue[200],
+        color: HexColor('#7FA4C3'),
         child: ListView(
           children: <Widget>[
             Container(
@@ -84,7 +95,7 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: TextInput(
                 labelText: "Fecha realizado",
-                hintText: "yy, mm, dd",
+                hintText: "día/mes/año",
                 inputType: null,
                 maxLines: 1,
                 controller: _controllerfechaRealizado,
@@ -120,6 +131,24 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
                               Colors.indigo[400],
                           ],
                 onPressed: () {
+                  
+                  if(_controllerTipoMantenimiento.text == "" || isNumeric(_controllerTipoMantenimiento.text) == true){
+                      final snackBar = SnackBar(content: Text('Error! Ingrese el "Tipo de mantenimiento"'));
+                      globalKey.currentState.showSnackBar(snackBar);
+                  }
+                  else if(isNumeric(_controllerKilometrajeMantenimiento.text) == false){
+                      final snackBar = SnackBar(content: Text('Error! Ingrese el "Kilometraje" cuando hizo el servicio'));
+                      globalKey.currentState.showSnackBar(snackBar);
+                  }
+                  else if (_controllerfechaRealizado.text == "" || isNumeric(_controllerfechaRealizado.text) == true) {
+                      final snackBar = SnackBar(content: Text('Error! Ingrese la "Fecha" cuando hizo el servicio')); //final snackBar = SnackBar(content: Text('Profile saved'), action: SnackBarAction(label: 'Undo', onPressed: (){},),
+                      globalKey.currentState.showSnackBar(snackBar);
+                  }
+                  else if(isNumeric(_controllerPrecioServicio.text) == false){
+                      final snackBar = SnackBar(content: Text('Error! El "Precio" debe ser un número'));
+                      globalKey.currentState.showSnackBar(snackBar);
+                  }
+                  else{
                   userBloc.updateRegistro(Registro(tipoMantenimiento: _controllerTipoMantenimiento.text,
                                                   kilometrajeMantenimiento: int.parse(_controllerKilometrajeMantenimiento.text),
                                                   fechaRealizado: _controllerfechaRealizado.text,
@@ -128,6 +157,7 @@ class _UpdateRegistrosScreenState extends State<UpdateRegistrosScreen> {
                                                   idVehiculo,
                                                   idRegistro);
                   Navigator.pop(context);
+                  }
                 },
               ),
             )

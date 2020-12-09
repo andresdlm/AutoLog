@@ -5,6 +5,7 @@ import 'package:autolog/widgets/text_input.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class UpdateVehiculoScreen extends StatefulWidget {
   
@@ -30,7 +31,14 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
 
   _UpdateVehiculoScreenState({Key key, this.idVehiculo, this.marca, this.modelo, this.year, this.color});  //constructor
 
+  bool isNumeric(String s) {
+  if (s == null) {
+    return true;
+  }
+  return int.tryParse(s) != null;
+  }
 
+  final globalKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +51,10 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
     final _controllerColor = TextEditingController()..text = color;
 
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: TitleHeader(title: "Editar Vehiculo", fontSize: 20,),
-        backgroundColor: Colors.blue[400],
+        backgroundColor: HexColor('#367EC2'),
         elevation: 8,
         leading: IconButton(
           padding: EdgeInsets.only(left: 10),
@@ -54,7 +63,7 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
         ),
       ),
       body: Container(
-        color: Colors.blue[200],
+        color: HexColor('#7FA4C3'),
         child: ListView(
           children: <Widget>[
             Container(
@@ -107,11 +116,29 @@ class _UpdateVehiculoScreenState extends State<UpdateVehiculoScreen> {
                           Colors.indigo[400],
                       ],
                 onPressed: () {
-                  userBloc.updateVehiculo(Vehiculo( marca: _controllerMarca.text,
-                                                   modelo: _controllerModelo.text,
-                                                   year: int.parse(_controllerYear.text),
-                                                   color: _controllerColor.text,) , idVehiculo);
-                  Navigator.pop(context);
+                    if(_controllerMarca.text == "" || isNumeric(_controllerMarca.text) == true){
+                        final snackBar = SnackBar(content: Text('Error! Ingrese la "Marca" del carro'));
+                        globalKey.currentState.showSnackBar(snackBar);
+                    }
+                     else if(_controllerModelo.text == "" || isNumeric(_controllerModelo.text) == true){
+                        final snackBar = SnackBar(content: Text('Error! Ingrese el "Modelo" del carro'));
+                        globalKey.currentState.showSnackBar(snackBar);
+                     }
+                    else if (isNumeric(_controllerYear.text) == false) {
+                        final snackBar = SnackBar(content: Text('Error! El "Año" debe ser un número entero')); 
+                        globalKey.currentState.showSnackBar(snackBar);
+                    }
+                    else if(_controllerColor.text == "" || isNumeric(_controllerColor.text) == true){
+                        final snackBar = SnackBar(content: Text('Error! Ingrese un "Color"'));
+                        globalKey.currentState.showSnackBar(snackBar);
+                    }
+                    else{
+                        userBloc.updateVehiculo(Vehiculo( marca: _controllerMarca.text,
+                                                        modelo: _controllerModelo.text,
+                                                        year: int.parse(_controllerYear.text),
+                                                        color: _controllerColor.text,) , idVehiculo);
+                        Navigator.pop(context);
+                    }
                 },
               ),
             )

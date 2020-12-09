@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ListVehiculos extends StatelessWidget {
 
@@ -19,7 +20,7 @@ class ListVehiculos extends StatelessWidget {
     userBloc = BlocProvider.of<UserBloc>(context);
     return new Scaffold (
         appBar: AppBar(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: HexColor('#174D80'),
           title: Text(
             "AutoLog",
             style: TextStyle(
@@ -30,7 +31,7 @@ class ListVehiculos extends StatelessWidget {
           ),
         ),
         body: new Container(
-          color: Colors.red[50],
+          color: HexColor('#528AB3'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -70,7 +71,7 @@ class ListVehiculos extends StatelessWidget {
                                       margin: EdgeInsets.all(8),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8)),
-                                        color: Colors.pink[100], //color de la tarjeta
+                                        color: Colors.blue[100],  //color de la tarjeta
                                       child: ListTile(
                                         dense: true,
                                         leading: Icon(Icons.directions_car, size: 40, color: Colors.grey[800]),

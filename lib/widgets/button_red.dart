@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ButtonRed extends StatefulWidget {
 
@@ -33,8 +34,8 @@ class _ButtonRed extends State<ButtonRed>{
             borderRadius: BorderRadius.circular(10.0),
             gradient: LinearGradient(
                 colors: [
-                  Colors.deepPurple[300],
-                  Colors.deepPurple[600],
+                  HexColor('#044A80'),
+                  HexColor('#0668B3')
                 ],
                 begin: FractionalOffset(0.2, 0.0),
                 end: FractionalOffset(1.0, 0.6),

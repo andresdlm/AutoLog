@@ -5,6 +5,7 @@ import 'package:autolog/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class RegisterScreen extends StatelessWidget{
 
@@ -23,8 +24,7 @@ class RegisterScreen extends StatelessWidget{
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Color(0xff6a515e),
-        ),
+        iconTheme: IconThemeData(color: Color(0xff6a515e)),
       ),
       body: Container(
         height: double.infinity,
@@ -32,7 +32,7 @@ class RegisterScreen extends StatelessWidget{
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xfff2cbd0), Color(0xfff4ced9)],
+              colors: [HexColor('#96C9FF'), HexColor('#113D6B')],
             )),
         child: SingleChildScrollView(
           child: Stack(
@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget{
                     ),
                   ),
                   child: Text('Register', style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 45,
                     color: Color(0xff6a515e),
                   ),),
                 ),
@@ -94,7 +94,7 @@ class RegisterScreen extends StatelessWidget{
                           autovalidateMode: AutovalidateMode.always,
                         ),
 
-                        SizedBox(height: 10,
+                        SizedBox(height: 15,
                         ),
                         GradientButton(
                           width: 140,
@@ -114,7 +114,7 @@ class RegisterScreen extends StatelessWidget{
                           ),
                         ),
                         SizedBox(
-                            height: 10
+                            height: 15
                         ),
                         GradientButton(
                           width: 140,

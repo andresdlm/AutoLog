@@ -7,6 +7,7 @@ import 'package:autolog/widgets/curved_widget.dart';
 import 'package:autolog/Usuario/bloc/bloc_user.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:autolog/widgets/gradient_button.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 
 class SignInScreen extends StatefulWidget {
@@ -56,9 +57,9 @@ class _SignInScreen extends State<SignInScreen> {
         height: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
+              begin: Alignment.topRight,
               end: Alignment.bottomCenter,
-              colors: [Color(0xfff2cbd0), Color(0xfff4ced9)],
+              colors: [HexColor('#96C9FF'), HexColor('#113D6B')],
             )),
         child: SingleChildScrollView(
           child: Stack(
@@ -76,7 +77,7 @@ class _SignInScreen extends State<SignInScreen> {
                     ),
                   ),
                   child: Text('Login', style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 45,
                     color: Color(0xff6a515e),
                   ),),
                 ),
@@ -93,7 +94,7 @@ class _SignInScreen extends State<SignInScreen> {
                           controller:_emailController,
                           decoration: InputDecoration(
                               icon: Icon(Icons.email),
-                              labelText: "Email"
+                              labelText: "Email",
                           ),
                           keyboardType: TextInputType.emailAddress,
                           autovalidateMode: AutovalidateMode.always,
@@ -127,7 +128,7 @@ class _SignInScreen extends State<SignInScreen> {
                           ),
                         ),
                         SizedBox(
-                            height: 10
+                            height: 15
                         ),
                         
                         GradientButton(
@@ -146,7 +147,7 @@ class _SignInScreen extends State<SignInScreen> {
                           ),
                         ),
                         SizedBox(
-                            height: 10
+                            height: 15
                         ),
                         GradientButton(
                           width: 140,

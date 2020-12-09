@@ -24,6 +24,7 @@ class TextInput extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(right: 20.0, left: 20.0),
       child: TextField(
+        textCapitalization: TextCapitalization.sentences,
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         maxLines: maxLines,

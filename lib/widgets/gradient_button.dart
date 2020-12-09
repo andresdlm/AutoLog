@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class GradientButton extends StatelessWidget {
   final double width;
@@ -20,7 +21,7 @@ class GradientButton extends StatelessWidget {
         gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [Color(0xffffae88), Color(0xff8f93ea)]
+            colors: [HexColor('#346FB8'), HexColor('0A356B') ]
         ),
       ),
       child: MaterialButton(

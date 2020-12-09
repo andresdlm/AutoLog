@@ -5,6 +5,7 @@ import 'package:autolog/widgets/text_input.dart';
 import 'package:autolog/widgets/title_header.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class UpdateMantenimientosScreen extends StatefulWidget {
   
@@ -46,6 +47,15 @@ class _UpdateMantenimientosScreenState extends State<UpdateMantenimientosScreen>
       _value = 4; 
   }
 
+  bool isNumeric(String s) {
+    if (s == null) {
+      return true;
+    }
+    return int.tryParse(s) != null;
+  }
+
+  final globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     selectTipoMantenimiento();
@@ -57,9 +67,10 @@ class _UpdateMantenimientosScreenState extends State<UpdateMantenimientosScreen>
     final _controllerdescripcion = TextEditingController()..text = descripcion;
 
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: TitleHeader(title: "Editar Notificación", fontSize: 20,),
-        backgroundColor: Colors.blue[400],
+        backgroundColor: HexColor('#367EC2'),
         elevation: 8,
         leading: IconButton(
           padding: EdgeInsets.only(left: 10),
@@ -68,7 +79,7 @@ class _UpdateMantenimientosScreenState extends State<UpdateMantenimientosScreen>
         ),
       ),
       body: Container(
-        color: Colors.blue[200],
+       color: HexColor('#7FA4C3'),
         child: ListView(
           children: <Widget>[
             Column(
@@ -167,13 +178,23 @@ class _UpdateMantenimientosScreenState extends State<UpdateMantenimientosScreen>
                               Colors.indigo[400],
                           ],
                     onPressed: () {
-                      userBloc.updateMantenimiento(Mantenimiento(tipoMantenimiento: _controllertipoMantenimiento,
-                                                                frecuenciaMantenimiento: int.parse(_controllerfrecuenciaMantenimiento.text),
-                                                                ultimoServicio: int.parse(_controllerultimoServicio.text),
-                                                                descripcion: _controllerdescripcion.text,),
-                                                                idVehiculo,
-                                                                idMantenimiento);
-                      Navigator.pop(context);
+                      if(isNumeric(_controllerfrecuenciaMantenimiento.text) == false){
+                          final snackBar = SnackBar(content: Text('Error! La "Frecuencia en km" debe ser un número entero '));
+                          globalKey.currentState.showSnackBar(snackBar);
+                      }
+                      else if (isNumeric(_controllerultimoServicio.text) == false) {
+                          final snackBar = SnackBar(content: Text('Error! La "ultima vez que hizo el servicio" debe ser un número entero')); //final snackBar = SnackBar(content: Text('Profile saved'), action: SnackBarAction(label: 'Undo', onPressed: (){},),
+                          globalKey.currentState.showSnackBar(snackBar);
+                      }
+                      else{
+                          userBloc.updateMantenimiento(Mantenimiento(tipoMantenimiento: _controllertipoMantenimiento,
+                                                                    frecuenciaMantenimiento: int.parse(_controllerfrecuenciaMantenimiento.text),
+                                                                    ultimoServicio: int.parse(_controllerultimoServicio.text),
+                                                                    descripcion: _controllerdescripcion.text,),
+                                                                    idVehiculo,
+                                                                    idMantenimiento);
+                          Navigator.pop(context);
+                      }
                     },
                   ),
                 )

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 
 class ListMantenimientos extends StatelessWidget {
@@ -190,7 +191,7 @@ class ListMantenimientos extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton(
-                      backgroundColor: Colors.red[700],
+                      backgroundColor: HexColor('#174D80'),
                       child: Icon(
                           Icons.edit_road,
                           size: 40
@@ -294,7 +295,7 @@ class ListMantenimientos extends StatelessWidget {
                         width: 10,
                   ),
                   FloatingActionButton(  
-                        backgroundColor: Colors.red[700],         
+                        backgroundColor: HexColor('#174D80'),    
                         child: Icon(
                             Icons.add_alert,
                             size: 30,

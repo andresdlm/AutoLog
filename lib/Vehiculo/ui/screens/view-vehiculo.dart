@@ -3,6 +3,7 @@ import 'package:autolog/Vehiculo/ui/widgets/list-registro-mantenimientos.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ViewVehiculo extends StatelessWidget {
 
@@ -27,7 +28,7 @@ class ViewVehiculo extends StatelessWidget {
                     fontSize: 26,
                     color: Colors.white
                   )),
-          backgroundColor: Colors.red[700],
+          backgroundColor: HexColor('#174D80'),
           elevation: 8,
 
           bottom: TabBar(

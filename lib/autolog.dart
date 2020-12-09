@@ -2,7 +2,7 @@ import 'package:autolog/Vehiculo/ui/screens/all_mantenimientos.dart';
 import 'package:autolog/Vehiculo/ui/screens/list-vehiculos.dart';
 import 'package:flutter/material.dart';
 import 'package:autolog/Usuario/ui/screens/userProfile.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 import 'Usuario/ui/screens/userProfile.dart';
 
 class Autolog extends StatefulWidget {
@@ -43,19 +43,19 @@ class _Autolog extends State<Autolog> {
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
             title: Text('NOTIFICATION'),
-            backgroundColor: Colors.teal[400],
+            backgroundColor: HexColor('#174D80'),
           ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_car_rounded),
             title: Text('CARS'),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: HexColor('#174D80'),
           ),
 
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('PROFILE'),
-            backgroundColor: Colors.deepPurpleAccent,
+            backgroundColor: HexColor('#174D80'),
           ),
 
           
